@@ -1,0 +1,100 @@
+{% extends './partials/base_layout.html' %}
+
+{% block styles %}
+<style>
+    #post-form {
+        margin-top: 70px; /* Adjust to your navbar height */
+    }
+    .editor-header {
+        padding: 10px 5%;
+        background-color: #fff;
+        border-bottom: 1px solid #dee2e6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .editor-header .title-input {
+        font-size: 1.5em;
+        border: none;
+        outline: none;
+        padding: 5px;
+        width: 100%;
+    }
+    .editor-header .desc-input,
+    .editor-header .tags-input {
+        font-size: 1em;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        outline: none;
+        padding: 5px;
+        width: 100%;
+        margin-top: 5px;
+    }
+    .content-wrapper {
+        padding: 10px 5%;
+    }
+    /* Style for the CKEditor instance */
+    .ck-editor__editable_inline {
+        min-height: 500px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<form id="post-form" method="POST" action="{{ url_for('save_post', post_id=post.id if post else None) }}" enctype="multipart/form-data">
+
+    <div class="editor-header">
+        <div style="flex-grow: 1; margin-right: 20px;">
+            <input type="text" name="post-title" class="title-input" placeholder="Post Title" value="{{ post.title if post else '' }}" required>
+            <input type="text" name="post-desc" class="desc-input" placeholder="Post Description" value="{{ post.desc if post else 'Default Description' }}">
+            <input type="text" name="post-tags" class="tags-input" placeholder="Tags (comma-separated)" value="{{ post.tags if post and post.tags else '' }}">
+        </div>
+        <input type="submit" value="{% if post %}Save Changes{% else %}Publish{% endif %}" style="padding: 10px 20px; font-size: 1em; cursor: pointer; align-self: flex-start;">
+
+    </div>
+    
+    <div class="content-wrapper">
+        <textarea name="post-content" id="wysiwyg-editor">{{ post.content if post else '' }}</textarea>
+    </div>
+    
+    <input type="file" id="image" name="image" style="display:none;">
+
+</form>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
+
+<script>
+    // Initialize CKEditor 5 with the MathType (LaTeX) plugin
+    CKEDITOR.ClassicEditor
+        .create(document.querySelector('#wysiwyg-editor'), {
+            // Add MathType to the plugins and toolbar
+            plugins: [
+                'Essentials', 'Paragraph', 'Bold', 'Italic', 'Underline', 'Strikethrough', 
+                'BlockQuote', 'Link', 'List', 'Table', 'Heading','MediaEmbed', 
+                'Code', 'CodeBlock', 'Image', 'ImageToolbar', 'ImageUpload'
+            ],
+            toolbar: [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
+                'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+                'imageUpload', 'insertTable', 'mediaEmbed', 'code', 'codeBlock', '|',
+                'math', '|', // The button to open the LaTeX editor
+                'undo', 'redo'
+            ],
+            // Configuration for the MathType plugin
+            math: {
+                engine: 'katex', // Use KaTeX for rendering
+                outputType: 'mathml', // Store as MathML for accessibility and consistency
+                forceOutputType: true,
+                enablePreview: true
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends './partials/base_layout.html' %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/separador.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/post-summary.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/generic-pages.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="div-separadora">
+    <h1>Problemas do mês</h1>
+</div>
+
+<div class="central-content">
+    <h2>O que são os problemas do mês?</h2>
+    <p>São desafios propostos mensalmente a todos os alunos de gradução de São Carlos. Esses desafios são no mesmo
+        estilo de problemas discursivos de olimpíadas de matemática.</p>
+    <p>Quem tiver a melhor solução ganha uma peça de giz Hagoromo.</p>
+    {% set the_limit = 3 %}
+    {% set the_height_limit = 30 %}
+    {% set chosen_tag = 'problema-mes' %}
+    {% include './partials/multiple_card_rows.html' %}
+
+</div>
+
+{% endblock %}

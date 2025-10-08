@@ -1,0 +1,11 @@
+<div class="resumo-post">
+    <div class="post-img-container">
+        <img src="{{url_for('static', filename='imgs/fotonemo.jpg') if curr_post.image_path == None else url_for('static', filename=curr_post.image_path[6:])}}"
+            alt="">
+    </div>
+    <div class="post-resumo-texto">
+        <h3>{{curr_post.title}}</h3>
+        <p>{{curr_post.desc}}</p>
+    </div>
+    <a href="{{'/post/' ~ curr_post.id}}" class="btn btn-primary">Acessar</a>
+</div>

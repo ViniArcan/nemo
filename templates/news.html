@@ -1,0 +1,26 @@
+{% extends './partials/base_layout.html' %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/separador.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/post-summary.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/generic-pages.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="div-separadora">
+    <h1>Notícias</h1>
+</div>
+
+<div class="central-content">
+    {% set the_limit = 3 %}
+    {% set the_height_limit = 30 %}
+    {% set chosen_tag = 'noticia' %}
+    {% include './partials/multiple_card_rows.html' %}
+</div>
+
+
+{% endblock %}

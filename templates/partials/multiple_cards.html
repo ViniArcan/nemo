@@ -1,0 +1,9 @@
+{% set i = namespace(value=0) %}
+{% for the_index in range(len_post_list) if chosen_tag in post_list[the_index].tags.split('|') and i.value != the_limit
+%}
+{% set i.value = i.value + 1%}
+<div class="col rounded-lg">
+    {% set curr_post = post_list[the_index] %}
+    {% include './partials/post_card.html' %}
+</div>
+{% endfor %}

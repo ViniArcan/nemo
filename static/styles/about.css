@@ -1,0 +1,29 @@
+.img-xadrez {
+    width: min(100%, 300px);
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.col {
+    min-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.paragraph {
+    color: gray;
+    font-style: italic;
+}
+
+.pergunta::before {
+    content: "";
+    background-color: gray;
+    height: 2px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}

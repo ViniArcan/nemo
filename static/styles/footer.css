@@ -1,0 +1,55 @@
+.info-footer {
+    width: 100%;
+    padding: 30px;
+    background-color: #007c92;
+}
+
+.info-footer p {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+.links-footer {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+.links-footer a {
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.links-footer svg:hover {
+    opacity: 0.7;
+}
+
+.ig {
+    color: #ac2bac;
+}
+
+.telegram-icon {
+    color: rgb(42, 171, 238);
+}
+
+footer {
+    flex: 1;
+    display: block;
+    height: auto;
+    margin-top: 10px;
+}
+
+.mail-icon {
+    color: rgb(229, 70, 70);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+article {
+    max-height: fit-content;
+}

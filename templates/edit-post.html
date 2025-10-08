@@ -1,0 +1,99 @@
+{% extends './partials/base_layout.html' %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/separador.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/post-summary.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/generic-pages.css') }}">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/create-post.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
+
+<script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+
+<script>
+    var converter = new showdown.Converter();
+    function updatePreview() {
+        var htmlInput = document.getElementById('txt-content').value;
+        var preview = document.getElementById('conteudo-post');
+        preview.innerHTML = converter.makeHtml(htmlInput);
+        update_renderings();
+    }
+</script>
+
+<script>
+    function submitForm(event) {
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('post-title', document.getElementById('inp-post-title').value);
+        formData.append('post-desc', document.getElementById('txt-desc').value);
+        formData.append('post-content', document.getElementById('txt-content').value);
+        formData.append('post-tags', document.getElementById('txt-tags').value);
+        formData.append('image', document.getElementById('image').files[0]);
+
+        fetch('/edit-post/{{pid}}', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Redirecionar para a página de visualização de posts após a criação bem-sucedida do post
+                window.location.href = '/post/' + data.post_id;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    }
+
+
+
+</script>
+
+<script>
+    document.getElementById('inp-post-title').value = document.getElementById('guarda-info').value;
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="div-separadora">
+    <h1>Criação de posts</h1>
+</div>
+
+<div class="central-content">
+
+    <form id="edit-post-form" method="post" onsubmit="submitForm(event)" enctype="multipart/form-data">
+        <p>Título</p>
+        <input type="text" name="post-title" id="inp-post-title">
+        <p>Descrição</p>
+        <textarea name="post-desc" id="txt-desc">{{pdesc}}</textarea>
+        <p>Conteúdo</p>
+        <textarea name="post-content" id="txt-content">{{ pcontent }}</textarea>
+        <p>Tags por linha</p>
+        <textarea name="post-tags" id="txt-tags">{{'\n'.join(ptags.split('|'))}}</textarea>
+        <br>
+        <label for="image">Imagem (se não quiser editar, nem toque):</label><br>
+        <input type="file" id="image" name="image"><br>
+        <input type="submit" value="Finalizar edição">
+        <textarea id="guarda-info" style="display: none;">{{ptitle}}</textarea>
+    </form>
+
+
+
+
+    <h2>Preview</h2>
+
+    <button onclick="updatePreview();">Ver</button>
+
+    <div id="conteudo-post">
+
+    </div>
+
+</div>
+
+{% endblock %}

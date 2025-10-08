@@ -1,0 +1,18 @@
+textarea {
+    width: 100%;
+    resize: none;
+}
+
+textarea#txt-content {
+    height: 500px;
+}
+
+textarea#txt-tags {
+    height: 300px;
+    width: 200px;
+}
+
+div#conteudo-post {
+    border: 1px solid black;
+    width: 100%;
+}
