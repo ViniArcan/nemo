@@ -6,13 +6,11 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="div-separadora">
     <h1>Account Settings</h1>
 </div>
 
 <div class="central-content">
-
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -38,7 +36,7 @@
         <input type="text" name="name" value="{{ current_user.name or '' }}" size="50">
         
         <p><strong>Email (cannot be changed)</strong></p>
-        <input type="email" name="email" value="{{ current_user.email }}" size="50" disabled>
+        <input type="email" name="email" value="{{ current_user.email }}" size="50">
         
         <p><strong>About Me</strong></p>
         <textarea name="about_me" rows="5" style="width: 100%;">{{ current_user.about_me or '' }}</textarea>
@@ -49,9 +47,14 @@
         <label for="password">New Password:</label>
         <input type="password" name="password" size="50">
         <br><br>
+    </form>
+        <hr>
+        <p><strong>Confirm Your Identity</strong></p>
+        <label for="current_password">Current Password:</label>
+        <input type="password" name="current_password" required size="50">
+        <br><br>
 
         <input type="submit" value="Save Settings">
     </form>
 </div>
-
 {% endblock %}

@@ -4,23 +4,135 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/separador.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/post-summary.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/generic-pages.css') }}">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/news.css') }}">
 {% endblock %}
 
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
-{% endblock %}
 
 {% block content %}
 <div class="div-separadora">
-    <h1>Notícias</h1>
+    <video autoplay muted playsinline>
+        <source src="{{ url_for('static', filename='videos/titles/news.webm') }}" type="video/webm">
+    </video>
+    <h1 class="fade-in-text"> $\text{Notícias e Premiações}$ </h1>
 </div>
 
 <div class="central-content">
-    {% set the_limit = 3 %}
-    {% set the_height_limit = 30 %}
-    {% set chosen_tag = 'noticia' %}
-    {% include './partials/multiple_card_rows.html' %}
+    {% if award_posts %}
+    <div class="news-section">
+        <h2>Prêmios e Conquistas</h2>
+        <div class="post-showcase row">
+            {% for post in award_posts %}
+                <div class="col-md-4 news-post-item {% if loop.index > 3 %}hidden-post{% endif %}" data-section="awards">
+                    <div class="resumo-post">
+                        <a href="{{ url_for('view_post', path=post.path) }}" style="text-decoration: none; color: inherit;">
+                            {% if post.meta.image %}
+                            <div class="post-img-container">
+                                <img src="{{ url_for('static', filename=post.meta.image) }}" alt="Post Image">
+                            </div>
+                            {% endif %}
+                            <div class="post-resumo-texto">
+                                <h4>{{ post.meta.title }}</h4>
+                                <p>{{ post.meta.desc }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if award_posts|length > 3 %}
+            <div class="button-container">
+                <button class="btn btn-primary show-more-btn" data-target="awards">Mostrar mais</button>
+                <button class="btn btn-secondary show-less-btn initially-hidden" data-target="awards">Mostrar menos</button>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <hr>
+
+    {% if other_news_posts %}
+    <div class="news-section">
+        <h2>Notícias gerais</h2>
+        <div class="post-showcase row">
+            {% for post in other_news_posts %}
+                <div class="col-md-4 news-post-item {% if loop.index > 3 %}hidden-post{% endif %}" data-section="other">
+                    <div class="resumo-post">
+                        <a href="{{ url_for('view_post', path=post.path) }}" style="text-decoration: none; color: inherit;">
+                            {% if post.meta.image %}
+                            <div class="post-img-container">
+                                <img src="{{ url_for('static', filename=post.meta.image) }}" alt="Post Image">
+                            </div>
+                            {% endif %}
+                            <div class="post-resumo-texto">
+                                <h4>{{ post.meta.title }}</h4>
+                                <p>{{ post.meta.desc }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if other_news_posts|length > 3 %}
+            <div class="button-container">
+                <button class="btn btn-primary show-more-btn" data-target="other">Mostrar mais</button>
+                <button class="btn btn-secondary show-less-btn initially-hidden" data-target="other">Mostrar menos</button>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% if not award_posts and not other_news_posts %}
+        <p>Nenhuma notícia publicada no momento.</p>
+    {% endif %}
+
+    <hr>
+
 </div>
 
+{% endblock %}
 
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const showMoreButtons = document.querySelectorAll('.show-more-btn');
+    const showLessButtons = document.querySelectorAll('.show-less-btn');
+
+    // --- Event Listener for "Show More" ---
+    showMoreButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetSection = this.dataset.target;
+            const hiddenPosts = document.querySelectorAll(`.news-post-item.hidden-post[data-section="${targetSection}"]`);
+            
+            hiddenPosts.forEach(post => post.classList.remove('hidden-post'));
+            
+            // Toggle button visibility
+            this.style.display = 'none';
+            document.querySelector(`.show-less-btn[data-target="${targetSection}"]`).style.display = 'inline-block';
+        });
+    });
+
+    // --- Event Listener for "Show Less" ---
+    showLessButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetSection = this.dataset.target;
+            const allPostsInSection = document.querySelectorAll(`.news-post-item[data-section="${targetSection}"]`);
+            
+            // Re-hide posts after the first 3
+            allPostsInSection.forEach((post, index) => {
+                if (index >= 3) { // index starts at 0, so 3 is the 4th item
+                    post.classList.add('hidden-post');
+                }
+            });
+
+            // Toggle button visibility
+            this.style.display = 'none';
+            document.querySelector(`.show-more-btn[data-target="${targetSection}"]`).style.display = 'inline-block';
+
+            // --- (Optional) Scroll user back to the top of the section ---
+            const sectionHeader = this.closest('.news-section').querySelector('h2');
+            sectionHeader.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    });
+});
+</script>
 {% endblock %}

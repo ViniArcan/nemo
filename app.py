@@ -2,10 +2,13 @@ import os
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
+from flask_flatpages import FlatPages
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
+import uuid
 
 # App Initialization and Configuration
 app = Flask(__name__)
@@ -13,6 +16,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 app.secret_key = 'CHANGE_THIS_IN_PRODUCTION_TO_A_RANDOM_SECRET_KEY'
 app.jinja_env.globals['title'] = 'NEMO'
+app.config['FLATPAGES_EXTENSION'] = '.md'
+app.config['FLATPAGES_ROOT'] = 'posts'
+app.config['FLATPAGES_AUTO_RELOAD'] = True
+
 
 # Extensions Initialization
 db = SQLAlchemy(app)
@@ -21,6 +28,7 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+pages = FlatPages(app)
 
 # Database Models
 class Post(db.Model):
@@ -29,15 +37,26 @@ class Post(db.Model):
     tags = db.Column(db.Text, nullable=True)
     content = db.Column(db.Text, nullable=False)
     desc = db.Column(db.String(200), nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date = db.Column(db.DateTime, nullable=False, default=datetime)
     image_path = db.Column(db.String(255))
+    status = db.Column(db.String(20), nullable=False, default='published')
+    post_type = db.Column(db.String(50), nullable=False, default='News')
+    is_solved = db.Column(db.Boolean, default=False)
+    solver_name = db.Column(db.String(100), nullable=True)
+    solution_content = db.Column(db.Text, nullable=True)
 
+# User Model
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
-    email = db.Column(db.String(128), primary_key=True)
+    
+    # User id
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    
+    # User fields/attributes
+    email = db.Column(db.String(128), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=True)
     password_hash = db.Column(db.String(128))
     is_authenticated = db.Column(db.Boolean, default=False)
-    name = db.Column(db.String(100), nullable=True)
     about_me = db.Column(db.Text, nullable=True)
     profile_image_path = db.Column(db.String(255), nullable=True, default='static/uploads/default_avatar.png')
 
@@ -46,9 +65,6 @@ class User(db.Model, UserMixin):
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
         self.name = name
         self.is_authenticated = False
-
-    def get_id(self):
-        return self.email
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
@@ -67,8 +83,32 @@ def user_loader(user_id):
 # --- Main Routes ---
 @app.route('/')
 def index():
-    posts = Post.query.order_by(Post.id.desc()).all()
-    return render_template('index.html', logado=current_user.is_authenticated, post_list=posts, len_post_list=len(posts))
+    # Get all published pages and sort them by date
+    published_pages = [p for p in pages if p.meta.get('status') == 'published']
+    sorted_pages = sorted(published_pages, key=lambda p: p.meta.get('date', datetime.now()), reverse=True)
+
+    # Filter for the 5 most recent news posts by checking the path
+    news_posts = [p for p in sorted_pages if p.path.startswith('news/')][:5]
+
+    # Filter for the single most recent open month problem by checking the path
+    problem_post = next((p for p in sorted_pages if p.path.startswith('months-problems/') and not p.meta.get('is_solved')), None)
+
+    return render_template(
+        'index.html', 
+        logado=current_user.is_authenticated, 
+        news_posts=news_posts,
+        problem_post=problem_post
+    )
+
+    
+    problem_post = next((p for p in sorted_pages if p.meta.get('post_type') == 'Month-Problem' and not p.meta.get('is_solved')), None)
+
+    return render_template(
+        'index.html', 
+        logado=current_user.is_authenticated, 
+        news_posts=news_posts,
+        problem_post=problem_post # Pass the single post object
+    )
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -95,10 +135,23 @@ def logout():
 @login_required
 def account_settings():
     if request.method == 'POST':
-        # Get the current user object
+        # --- Verify Current Password ---
+        current_password = request.form.get('current_password')
+        if not current_user.check_password(current_password):
+            flash('Incorrect password. Please try again.', 'danger')
+            return redirect(url_for('account_settings'))
+        # ---------------------------------
+
         user = current_user
-        
-        # Update text fields from the form
+        new_email = request.form.get('email')
+
+        # Check if the email has changed and if the new one is already taken
+        if new_email != user.email and User.query.filter_by(email=new_email).first():
+            flash('That email address is already in use.', 'danger')
+            return redirect(url_for('account_settings'))
+
+        # Update email and other fields
+        user.email = new_email
         user.name = request.form.get('name')
         user.about_me = request.form.get('about_me')
         
@@ -118,20 +171,71 @@ def account_settings():
 
         # Save all the changes to the database
         db.session.commit()
-        
         flash('Your settings have been updated successfully!', 'success')
         return redirect(url_for('account_settings'))
 
-    # For a GET request, just show the page
     return render_template('account-settings.html', logado=current_user.is_authenticated)
 
+@app.route('/about')
+def about():
+    return render_template('about.html', logado=current_user.is_authenticated)
+
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', logado=current_user.is_authenticated)
+
+@app.route('/news')
+def news():
+    # Fetch all published news posts by looking at the parent 'news' folder
+    news_pages = [p for p in pages if p.meta.get('status') == 'published' and p.path.startswith('news/')]
+    
+    # Sort all news by date, newest first
+    sorted_news = sorted(news_pages, key=lambda p: p.meta.get('date', datetime.now()), reverse=True)
+
+    # Categorize posts based on their subfolder
+    award_posts = [p for p in sorted_news if p.path.startswith('news/awards/')]
+    other_news_posts = [p for p in sorted_news if p.path.startswith('news/others/')]
+
+    return render_template(
+        'news.html', 
+        logado=current_user.is_authenticated, 
+        award_posts=award_posts,
+        other_news_posts=other_news_posts
+    )
+
+@app.route('/months-problems')
+def months_problems():
+    # Fetch all published "Month-Problem" posts from the file system
+    problem_pages = [p for p in pages if p.meta.get('status') == 'published' and p.path.startswith('months-problems/') and p.meta.get('post_type') == 'Month-Problem']
+    
+    # Sort by 'is_solved' (False comes first), then by date (newest first)
+    sorted_problems = sorted(problem_pages, key=lambda p: (p.meta.get('is_solved', False), p.meta['date']), reverse=False)
+    
+    return render_template('months-problems.html', logado=current_user.is_authenticated, post_list=sorted_problems)
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html', logado=current_user.is_authenticated)
+
+
+@app.route('/materials')
+def materials():
+    return render_template('materials.html', logado=current_user.is_authenticated)
+
 # --- Post Routes ---
-@app.route('/post/<int:post_id>')
-def view_post(post_id):
-    post = db.session.get(Post, post_id)
-    if not post:
-        return "Post not found", 404
-    return render_template('view-post.html', post=post, logado=current_user.is_authenticated)
+@app.route('/post/<path:path>')
+def view_post(path):
+    post = pages.get_or_404(path)
+    author = None
+
+    # If it's a News post, try to find the author in the database
+    if post.meta.get('post_type') == 'News':
+        author_email = post.meta.get('author_email')
+        if author_email:
+            author = User.query.filter_by(email=author_email).first()
+
+    return render_template('view-post-flat.html', post=post, author=author, logado=current_user.is_authenticated)
 
 @app.route('/post/new')
 @app.route('/post/edit/<int:post_id>')
@@ -151,11 +255,14 @@ def save_post(post_id):
     if post_id and not post:
         return "Post not found", 404
 
+    if 'save_draft' in request.form:
+        post.status = 'draft'
+    else:
+        post.status = 'published'
+
     post.title = request.form.get('post-title')
     post.desc = request.form.get('post-desc')
-    
     post.content = request.form.get('post-content')
-
     post.tags = '|'.join([tag.strip() for tag in request.form.get('post-tags', '').splitlines() if tag.strip()]) or 'sem'
     
     image = request.files.get('image')
@@ -164,6 +271,17 @@ def save_post(post_id):
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image.save(image_path)
         post.image_path = image_path
+
+    post.post_type = request.form.get('post_type')
+
+    if post.post_type == 'Month-Problem':
+        post.is_solved = 'is_solved' in request.form
+        if post.is_solved:
+            post.solver_name = request.form.get('solver_name')
+            post.solution_content = request.form.get('solution_content')
+        else:
+            post.solver_name = None
+            post.solution_content = None
 
     if not post_id:
         db.session.add(post)
@@ -184,143 +302,36 @@ def delete_post(post_id):
         flash('Post deleted successfully.', 'success')
     return redirect(url_for('index'))
 
-
-@app.route('/about')
-def about():
-    return render_template('about.html', logado=current_user.is_authenticated)
-
-
-@app.route('/faq')
-def faq():
-    return render_template('faq.html', logado=current_user.is_authenticated)
-
-
-@app.route('/months-problems')
-def months_problems():
-    posts = Post.query.order_by(Post.id.desc()).all()
-    return render_template('months-problems.html', logado=current_user.is_authenticated, post_list=posts, len_post_list=len(posts))
-
-
-@app.route('/news')
-def news():
-    posts = Post.query.order_by(Post.id.desc()).all()
-    return render_template('news.html', logado=current_user.is_authenticated, post_list=posts, len_post_list=len(posts))
-
-
-@app.route('/contact')
-def contact():
-    return render_template('contact.html', logado=current_user.is_authenticated)
-
-
-@app.route('/materials')
-def materials():
-    return render_template('materials.html', logado=current_user.is_authenticated)
-
-"""
-@app.route('/create-post', methods=['GET'])
+@app.route('/drafts')
 @login_required
-def create_post_get():
-    return render_template('create-post.html', logado=current_user.is_authenticated)
+def drafts():
+    # Query the database for all posts marked as 'draft'
+    draft_posts = Post.query.filter_by(status='draft').order_by(Post.date.desc()).all()
+    return render_template('drafts.html', post_list=draft_posts, len_post_list=len(draft_posts), logado=current_user.is_authenticated)
 
-
-@app.route('/create-post', methods=['POST'])
+@app.route('/upload-image', methods=['POST'])
 @login_required
-def create_post_post():
-    # Obter os dados do formulário
-    title = request.form.get('post-title')
-    desc = request.form.get('post-desc')
-    content = request.form.get('post-content')  # .replace('\r\n', '\n')
-    tags = request.form.get('post-tags')
-    image = request.files['image'] if 'image' in request.files else None
+def upload_image():
+    # Get the uploaded file from the request
+    file = request.files.get('file')
+    if not file:
+        return jsonify({'error': 'No file uploaded.'}), 400
 
-    # Processar as tags
-    as_tags = tags.split('\r\n')
-    as_tags = [a_tag for a_tag in as_tags if a_tag != '']
-    if len(as_tags) == 0:
-        as_tags.append('sem')
-    as_tags = '|'.join(as_tags)
+    # Generate a secure filename to prevent conflicts
+    filename = secure_filename(file.filename)
+    
+    # We might add a unique prefix (like a timestamp or UUID) to the filename in a real application
+    # For now, this is sufficient.
+    
+    # Save the file to your upload folder
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-    # Salvar a imagem no servidor, se existir
-    if image:
-        filename = secure_filename(image.filename)
-        base_filename, file_extension = os.path.splitext(filename)
-        counter = 0
-        while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
-            counter += 1
-            filename = f"{base_filename}_{counter}{file_extension}"
-        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        image.save(image_path)
-    else:
-        image_path = None
-
-    # Criar o novo post
-    new_post = Post(title=title, content=content,
-                    tags=as_tags, image_path=image_path, desc=desc)
-    db.session.add(new_post)
-    db.session.commit()
-
-    return jsonify({'success': True, 'post_id': new_post.id})
-
-
-@app.route('/edit-post/<post_id>', methods=['GET'])
-@login_required
-def edit_post_get(post_id):
-    post = db.session.get(Post, post_id)
-    post_data = {'pid': post.id, 'ptitle': post.title,
-                 'pcontent': post.content, 'ptags': post.tags, 'pimg_path': post.image_path,
-                 'pdate': post.date, 'pdesc': post.desc}
-    return render_template('edit-post.html', logado=current_user.is_authenticated, **post_data)
-
-
-@app.route('/edit-post/<post_id>', methods=['POST'])
-@login_required
-def edit_post_post(post_id):
-    # Obter os dados do formulário
-    post = db.session.get(Post, post_id)
-    title = request.form.get('post-title')
-    desc = request.form.get('post-desc')
-    content = request.form.get('post-content')  # .replace('\r\n', '\n')
-    tags = request.form.get('post-tags')
-    image = request.files['image'] if 'image' in request.files else None
-
-    # Processar as tags
-    as_tags = tags.split('\n')
-    as_tags = [a_tag for a_tag in as_tags if a_tag != '']
-    if len(as_tags) == 0:
-        as_tags.append('sem')
-    as_tags = '|'.join(as_tags)
-
-    post.title = title
-    post.desc = desc
-    post.content = content
-    post.tags = as_tags
-
-    # Salvar a imagem no servidor, se existir
-    if image:
-        filename = secure_filename(image.filename)
-        base_filename, file_extension = os.path.splitext(filename)
-        counter = 0
-        while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
-            counter += 1
-            filename = f"{base_filename}_{counter}{file_extension}"
-        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        image.save(image_path)
-        if post.image_path is not None:
-            os.remove(post.image_path)
-        post.image_path = image_path
-    else:
-        image_path = None
-
-    # Criar o novo post
-    db.session.commit()
-
-    return jsonify({'success': True, 'post_id': post_id})
-"""
+    # Return the URL of the uploaded file in the format CKEditor expects
+    url = url_for('static', filename=os.path.join('uploads', filename))
+    return jsonify({'location': url})
 
 # -----------------------------------------------------------------------------
 # Main Execution
 # -----------------------------------------------------------------------------
 if __name__ == "__main__":
-    #with app.app_context():
-    #    db.create_all()
     app.run(host='localhost', port=5000)

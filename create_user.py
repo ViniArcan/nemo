@@ -13,7 +13,7 @@ with app.app_context():
 
     # Check if user already exists
     if User.query.filter_by(email=email).first():
-        print(f"Error: User with email '{email}' already exists.")
+        print(f"Error: The email '{email}' is already is use.")
     else:
         new_user = User(email=email, password=password, name=name)
         db.session.add(new_user)

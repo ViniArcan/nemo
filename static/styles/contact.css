@@ -24,3 +24,11 @@
 .row html {
     display: block;
 }
+
+.div-separadora video {
+    position: absolute;
+    top: -118.5px;
+    width: 33%;
+    object-fit: cover; 
+    z-index: 1; 
+}

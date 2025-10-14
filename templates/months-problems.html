@@ -2,29 +2,56 @@
 
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/separador.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/post-summary.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/generic-pages.css') }}">
-{% endblock %}
 
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/months-problems.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="div-separadora">
-    <h1>Problemas do mês</h1>
+    <video autoplay muted playsinline>
+        <source src="{{ url_for('static', filename='videos/titles/months-problems.webm') }}" type="video/webm">
+    </video>
+    
+    <h1 class="fade-in-text"> $\text{Problemas do Mês}$ </h1>
 </div>
 
 <div class="central-content">
-    <h2>O que são os problemas do mês?</h2>
-    <p>São desafios propostos mensalmente a todos os alunos de gradução de São Carlos. Esses desafios são no mesmo
-        estilo de problemas discursivos de olimpíadas de matemática.</p>
-    <p>Quem tiver a melhor solução ganha uma peça de giz Hagoromo.</p>
-    {% set the_limit = 3 %}
-    {% set the_height_limit = 30 %}
-    {% set chosen_tag = 'problema-mes' %}
-    {% include './partials/multiple_card_rows.html' %}
+    {% if post_list %}
+        <div class="problem-list">
+            {% for post in post_list %}
+                <a href="{{ url_for('view_post', path=post.path) }}" class="problem-item {% if not post.meta.is_solved %}open-problem{% endif %}">
+                    {% if post.meta.image %}
+                    <div class="problem-item-img">
+                        <img src="{{ url_for('static', filename=post.meta.image) }}" alt="Problem Image">
+                    </div>
+                    {% endif %}
 
+                    <div class="problem-item-info">
+                        <h5>{{ post.meta.title }}</h5>
+                        <hr>
+                        <p>{{ post.meta.desc }}</p>
+                        
+                        {% if not post.meta.is_solved %}
+                            <hr>
+                            <p class="status-open">Status: Em Aberto</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="problem-item-solver">
+                        {% if post.meta.is_solved %}
+                            <p class="status-solved">Premiado:</p>
+                            {% if post.meta.solver_image %}
+                                <img src="{{ url_for('static', filename=post.meta.solver_image) }}" alt="Solver" style="width: 90px; height: 90px; border-radius: 50%; margin-bottom: 5px; margin-right: 10px;">
+                            {% endif %}
+                            <p style="margin-right: 10px; font-size: larger;" ><strong>{{ post.meta.solver_name }}</strong></p>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Não há problemas do mês publicados.</p>
+    {% endif %}
 </div>
-
 {% endblock %}

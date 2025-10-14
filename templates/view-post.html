@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/separador.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/generic-pages.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/post-showcase.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/post-content.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -16,32 +16,43 @@
     {% if post.image_path %}
     <img src="{{ url_for('static', filename=post.image_path.replace('static/', '')) }}" alt="Featured Image">
     {% endif %}
-    
-    <div id="post-actual-content"></div>
-    <textarea style="display:none;" id="raw-content">{{ post.content }}</textarea>
+
+    <div id="post-actual-content">
+        {{ post.content | safe }}
+    </div>
+
+    {% if post.post_type == 'Month-Problem' %}
+        <hr style="margin: 30px 0;">
+        {% if post.is_solved %}
+            <div class="solution-container" style="padding: 20px; border: 1px solid #198754; border-radius: 5px;">
+                <h3 style="color: #198754;">Problema Resolvido</h3>
+                <p><strong>Solução por:</strong> {{ post.solver_name }}</p>
+                <div>
+                    {{ post.solution_content | safe }}
+                </div>
+            </div>
+        {% else %}
+            <h3 style="color: #dc3545;">Problema Em Aberto</h3>
+            <p>A solução para este problema ainda não foi publicada.</p>
+        {% endif %}
+    {% endif %}
 
     <p class="post-publish-date"><i>Publicado em {{ post.date.strftime('%d/%m/%Y') }}</i></p>
 </div>
 
 {% if logado %}
-<form action="{{ url_for('post_editor', post_id=post.id) }}" method="get">
-    <button type="submit">Editar</button>
-</form>
-<form action="{{ url_for('delete_post', post_id=post.id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');">
-    <button type="submit">Deletar</button>
-</form>
+<div style="text-align: center; margin: 20px 0;">
+    <form action="{{ url_for('post_editor', post_id=post.id) }}" method="get" style="display: inline-block;">
+        <button type="submit">Editar</button>
+    </form>
+    <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');" style="display: inline-block;">
+        <button type="submit">Deletar</button>
+    </form>
+</div>
 {% endif %}
+
 {% endblock %}
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // CKEditor saves content as HTML, so we just need to display it.
-        // MathJax will automatically find and render any <math> tags.
-        var htmlContent = document.getElementById('raw-content').value;
-        var contentDiv = document.getElementById('post-actual-content');
-        contentDiv.innerHTML = htmlContent;
-    });
-</script>
 {% endblock %}

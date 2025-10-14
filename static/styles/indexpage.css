@@ -3,8 +3,9 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    height: 100vh;
+    height: 90vh;
     clip-path: polygon(100% 0, 0 0, 0% 100%, 100% 100%);
+    background-color: rgb(253, 246, 241);
 }
 
 .video-container {
@@ -16,19 +17,29 @@
 }
 
 .video-container video {
+    top: -20px;
     width: 100%;
     height: 100%;
-    position: relative;
+    position: absolute;
     pointer-events: none;
+    /*background-color: transparent;*/
 }
 
 .textos-logo {
-    position: absolute; top: 800px;
+    position: absolute; top: 700px;
     width: 50vw;
     font-size: 1.7rem;
     z-index: 0;
     color: black;
     text-align: center;
+
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out 4.25s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .textos-logo h1 {
@@ -77,8 +88,8 @@ body {
 
 .o-que-e, .noticias {
     /*background-color: #e5e5e5;*/
-    background-color: rgb(5, 4, 1);
-    color: white;
+    background-color: #d3efff;
+    color: rgb(24, 24, 24);
 }
 
 .noticias, .posts-recentes, .ultimo-problema-mes {
@@ -120,4 +131,70 @@ body {
     text-align: center;
     width: 100%;
     font-style: italic;
+}
+
+p {
+    font-size: 1.2em; /* You can adjust this value */
+}
+
+.problem-showcase-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.problem-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start; /* Change this to align to the top */
+    background-color: rgb(253, 246, 241);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.problem-image {
+    flex-shrink: 0;
+    width: 500px; /* Adjust size of the image */
+}
+
+.problem-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.problem-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.problem-text h1 {
+    font-size: 2.5em;
+    color: #6c757d;
+}
+
+.problem-text h2 {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.problem-header hr {
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+.horizontal-scroll-wrapper {
+    overflow-x: auto; /* This enables horizontal scrolling */
+    padding-bottom: 20px; /* Add space for the scrollbar */
+}
+
+.post-container-scrollable {
+    display: flex;
+    flex-wrap: nowrap; /* Ensure all cards stay in one line */
+    gap: 20px; /* Space between cards */
+}
+
+.col-scrollable {
+    flex: 0 0 300px; /* Each card will have a fixed width of 300px */
 }

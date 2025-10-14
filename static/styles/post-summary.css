@@ -14,13 +14,12 @@
 }
 
 .resumo-post {
-    width: min(100%, 300px);
+    width: 300px;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
     border-radius: 0.5rem;
     margin: 3px;
     padding: 0;
     background-color: white;
-    height: 100%;
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -71,4 +70,21 @@
 .post-showcase {
     margin-left: 10%;
     margin-right: 10%;
+}
+
+.btn-saiba-mais {
+    display: inline-block;
+    margin-top: auto; /* Pushes the button to the bottom of the card */
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn-saiba-mais:hover {
+    background-color: #0056b3;
+    color: white;
 }

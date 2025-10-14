@@ -1,0 +1,56 @@
+.div-separadora video {
+    position: absolute;
+    top: -112.5px;
+    width: 32%;
+    object-fit: cover; 
+    z-index: 1; /* Send video to the back layer */
+}
+
+
+.problem-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 15px 10px;
+    border-bottom: 1px solid #dee2e6;
+    text-decoration: none;
+    color: #212529;
+}
+.problem-item:hover {
+    background-color: #f8f9fa;
+}
+.open-problem .problem-item-img {
+    width: 300px; /* Make the image larger for open problems */
+    height: 300px;
+}
+.open-problem .problem-item-info h5 {
+    font-size: 1.5em; /* Make the title larger */
+}
+.problem-item-img {
+    width: 200px; /* Adjust image size */
+    height: 200px;
+    flex-shrink: 0;
+}
+.problem-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.problem-item-info {
+    flex-grow: 1;
+}
+.problem-item-info h5 {
+    margin: 0 0 5px 0;
+}
+.problem-item-info p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #6c757d;
+}
+.problem-item-solver {
+    flex-shrink: 0;
+    text-align: right;
+}
+.status-solved { color: #198754; font-weight: bold; font-size: large; margin-right: 15px;}
+.status-open { color: #dc3545; font-weight: bold; }

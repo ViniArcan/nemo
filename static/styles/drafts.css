@@ -1,0 +1,18 @@
+.draft-list a {
+    display: block;
+    padding: 15px 10px;
+    border-bottom: 1px solid #dee2e6;
+    text-decoration: none;
+    color: #212529;
+}
+.draft-list a:hover {
+    background-color: #f8f9fa;
+}
+.draft-list h5 {
+    margin: 0 0 5px 0;
+}
+.draft-list p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #6c757d;
+}
