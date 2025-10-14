@@ -1,0 +1,38 @@
+{% extends './partials/base_layout.html' %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/separador.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/generic-pages.css') }}">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/drafts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="div-separadora">
+    <video autoplay muted playsinline>
+        <source src="{{ url_for('static', filename='videos/titles/drafts.webm') }}" type="video/webm">
+    </video>
+
+    <h1 class="fade-in-text"> $\mathbb{DRAFTS}$ </h1>
+</div>
+
+<div class="central-content">
+    {% if post_list %}
+        <div class="draft-list">
+            {% for post in post_list %}
+                <div class="draft-item">
+                    <a class="draft-link" href="{{ url_for('post_editor', post_id=post.id) }}">
+                        <h5>{{ post.title }}</h5>
+                        <p>{{ post.desc }}</p>
+                    </a>
+                    <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this draft?');">
+                        <button type="submit" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer;" class="delete-button">Delete</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no drafts.</p>
+    {% endif %}
+</div>
+{% endblock %}

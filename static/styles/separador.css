@@ -1,10 +1,29 @@
-div.div-separadora {
-    height: 180px;
+.div-separadora {
+    height: 90px;
+    position: relative; /* This is the anchor for the video */
+    display: grid;
+    place-items: center;
+    overflow: hidden;
     background-color: rgb(253, 246, 241);
-    display: flex;
-    justify-content: center;
 }
 
-.div-separadora h1 {
-    margin: auto;
+.div-separadora video {
+    position: absolute;
+    top: -116px;
+    width: 32.71%;
+    object-fit: cover; 
+    z-index: 1;
 }
+
+.div-separadora h1.fade-in-text {
+    position: relative; /* Ensure text gets its own layer */
+    z-index: 2; /* Bring text to the front layer */
+    color: rgba(0, 0, 0, 0);
+    /* animation: fadeIn 0.5s ease-in-out 1s forwards; */
+}
+/*
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+*/

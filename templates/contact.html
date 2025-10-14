@@ -14,9 +14,12 @@
 
 
 {% block content %}
-
 <div class="div-separadora">
-    <h1>Contato</h1>
+     <video autoplay muted playsinline>
+        <source src="{{ url_for('static', filename='videos/titles/contact.webm') }}" type="video/webm">
+    </video>
+
+    <h1 class="fade-in-text"> $\text{Contato}$ </h1>
 </div>
 
 <div class="central-content">
@@ -65,5 +68,4 @@
             src="https://maps.google.com/maps?q=icmc&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=&amp;output=embed"
             frameborder="0"></iframe></div>
 </div>
-
 {% endblock %}

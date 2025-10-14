@@ -17,7 +17,7 @@
     </div>
     <div class="video-container">
         <video autoplay muted>
-            <source src="{{ url_for('static', filename='/videos/FishCurve.mp4') }}" type="video/mp4">
+            <source src="{{ url_for('static', filename='/videos/FishCurve.webm') }}" type="video/mp4">
             Seu navegador não suporta vídeos!
         </video>
     </div>
@@ -28,9 +28,8 @@
         <div class="o-que-e">
             <div class="flex-with-img row">
                 <div class="col">
-                    <h1>O que é?</h1>
-                    <p>O <strong>NEMO</strong> é um grupo de extensão do ICMC, sediado na USP de São Carlos, cujo foco é
-                        realizar
+                    <h1>Sobre nós</h1>
+                    <p>O <strong>NEMO</strong> é um grupo de extensão do ICMC, sediado na USP de São Carlos, cujo foco é realizar
                         <strong>treinamentos para olimpíadas de matemática universitárias</strong>.
                     </p>
                     <p>Realizamos encontros semanais durante os quais listas de problemas de matemática olímpica são
@@ -68,8 +67,7 @@
                     <p>Diferentemente dessas provas, os problemas das olimpíadas envolvem o <strong> uso de argumentos
                             matemáticos de maneira criativa e esperta, o que faz com que sejam muito
                             divertidos</strong>.</p>
-                    <a role="button" class="btn btn-primary" style="width:100%;" href="/about#como-sao-problemas">Saiba
-                        mais</a>
+                    <a role="button" class="btn btn-primary" href="/about#como-sao-problemas"> Saiba mais </a>
                 </div>
 
             </div>
@@ -78,23 +76,55 @@
     </div>
 
     <div class="noticias">
-        <h1>Notícias</h1>
-        <div class="post-container row">
-            {% set chosen_tag = 'noticia' %}
-            {% set the_limit = 3 %}
-            {% include './partials/multiple_cards.html' %}
+        <a href="/news" style="color: rgb(24, 24, 24); text-shadow: 1px 1px rgba(48, 48, 48, 0.5); text-decoration: none;" > <h1>Notícias e Premiações</h1> </a>
+        
+        <div class="horizontal-scroll-wrapper">
+            <div class="post-container-scrollable">
+                {% for post in news_posts %}
+                    <div class="col-scrollable">
+                        <div class="resumo-post">
+                            <a href="{{ url_for('view_post', path=post.path) }}" style="text-decoration: none; color: inherit;">
+                                {% if post.meta.image %}
+                                <div class="post-img-container">
+                                    <img src="{{ url_for('static', filename=post.meta.image) }}" alt="Post Image">
+                                </div>
+                                {% endif %}
+                                <div class="post-resumo-texto">
+                                    <h4>{{ post.meta.title }}</h4>
+                                    <p>{{ post.meta.desc }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
     <div class="ultimo-problema-mes">
-        <h1>Problema do mês atual</h1>
-        <div class="post-container row">
-            {% set chosen_tag = 'problema-mes' %}
-            {% set the_limit = 3 %}
-            {% include './partials/multiple_cards.html' %}
-        </div>
+        {% if problem_post %}
+            <div class="problem-container">
+                <div class="problem-image">
+                    <img src="{{ url_for('static', filename=problem_post.meta.image) }}" alt="Problema do Mês">
+                </div>
+                <div class="problem-text">
+                    <h1>Problema do Mês</h1>
+                    <hr>
+                    <h2>{{ problem_post.meta.title }}</h2>
+                    <p>{{ problem_post.meta.desc }}</p>
+                    <a href="{{ url_for('view_post', path=problem_post.path) }}" class="btn-saiba-mais">Saiba mais</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="ultimo-problema-mes">
+                <h1>Problema do Mês</h1>
+                <p>Nenhum problema em aberto no momento.</p>
+            </div>
+        {% endif %}
     </div>
 </div>
 </article>
 
 {% endblock %}
+
+

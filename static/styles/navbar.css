@@ -6,19 +6,46 @@
     }
 }
 
-nav.solid, nav:hover {
-    background-color: rgba(218, 238, 234, 1);
+nav {
+    position: sticky; /* Necessary for the pseudo-element */
+    top: 0; /* Stick to the top */
+    z-index: 1000; /* Ensure it stays above other content */
+    transition: background-color 0.5s; /* Smooth transition for background color */
+    background-color: rgb(253, 246, 241); 
+    /* background: linear-gradient(to bottom, rgb(253, 246, 241) 70%, transparent 100%);*/
 }
 
-nav {
-    background-color: rgb(253, 246, 241);;
-    transition: background-color 1s;
+nav:hover::before {
+    opacity: 1; /* Fade the gradient in */
+}
+
+nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(to bottom, #d3efff 70%, transparent 100%);
+    background-color: rgb(253, 246, 241,0);
+    
+    opacity: 0; /* Start fully transparent */
+    transition: opacity 0.5s; /* Animate the fade */
+    z-index: -1; /* Place the gradient behind the nav content */
 }
 
 span.nemo-icon {
-    background-image: url('../imgs/fotonemo.jpg');
+    background-image: url('../imgs/fotonemo.webp');
     background-size: contain;
     width: 30px;
     height: 30px;
     display: inline-block;
+}
+
+.navbar-nav .nav-link.active {
+    background-color: #a6e1ff; /* The new background color */
+    color: rgb(7, 15, 67) !important;      /* White text for contrast */
+    border-radius: 8px;           /* Rounded corners for a button look */
+    text-shadow: none;            /* Remove the glow for a cleaner look */
 }

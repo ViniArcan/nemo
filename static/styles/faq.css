@@ -14,3 +14,11 @@
     margin-right: 0;
     width: 100%;
 }
+
+.div-separadora video {
+    position: absolute;
+    top: -118px;
+    width: 33.5%;
+    object-fit: cover; 
+    z-index: 1; /* Send video to the back layer */
+}

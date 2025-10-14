@@ -2,99 +2,133 @@
 
 {% block styles %}
 <style>
-    #post-form {
-        margin-top: 70px; /* Adjust to your navbar height */
-    }
-    .editor-header {
-        padding: 10px 5%;
-        background-color: #fff;
-        border-bottom: 1px solid #dee2e6;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .editor-header .title-input {
-        font-size: 1.5em;
-        border: none;
-        outline: none;
-        padding: 5px;
-        width: 100%;
-    }
-    .editor-header .desc-input,
-    .editor-header .tags-input {
-        font-size: 1em;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        outline: none;
-        padding: 5px;
-        width: 100%;
-        margin-top: 5px;
-    }
-    .content-wrapper {
-        padding: 10px 5%;
-    }
-    /* Style for the CKEditor instance */
-    .ck-editor__editable_inline {
-        min-height: 500px;
-    }
+    #post-form { margin-top: 70px; }
+    .editor-header { padding: 10px 5%; background-color: #fff; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .editor-header .title-group { flex-grow: 1; }
+    .editor-header .title-input { font-size: 1.5em; border: none; outline: none; padding: 5px; width: 100%; }
+    .editor-header .actions { display: flex; gap: 10px; flex-shrink: 0; }
+    .content-wrapper { padding: 10px 5%; }
 </style>
 {% endblock %}
 
 
 {% block content %}
 <form id="post-form" method="POST" action="{{ url_for('save_post', post_id=post.id if post else None) }}" enctype="multipart/form-data">
-
     <div class="editor-header">
-        <div style="flex-grow: 1; margin-right: 20px;">
+        <select name="post_type" id="post-type-selector" style="padding: 10px;">
+            <option value="News" {% if not post or post.post_type == 'News' %}selected{% endif %}>News</option>
+            <option value="Month-Problem" {% if post and post.post_type == 'Month-Problem' %}selected{% endif %}>Month-Problem</option>
+        </select>
+        <div class="title-group" style="flex-grow: 1; margin: 0 20px;">
             <input type="text" name="post-title" class="title-input" placeholder="Post Title" value="{{ post.title if post else '' }}" required>
-            <input type="text" name="post-desc" class="desc-input" placeholder="Post Description" value="{{ post.desc if post else 'Default Description' }}">
-            <input type="text" name="post-tags" class="tags-input" placeholder="Tags (comma-separated)" value="{{ post.tags if post and post.tags else '' }}">
         </div>
-        <input type="submit" value="{% if post %}Save Changes{% else %}Publish{% endif %}" style="padding: 10px 20px; font-size: 1em; cursor: pointer; align-self: flex-start;">
-
+        <div class="actions">
+            <button type="submit" name="save_draft" value="true" style="padding: 10px 20px; font-size: 1em; cursor: pointer; background-color: #6c757d; color: white; border: none;">Save as Draft</button>
+            <button type="submit" name="publish" value="true" style="padding: 10px 20px; font-size: 1em; cursor: pointer;">{% if post and post.status == 'published' %}Update{% else %}Publish{% endif %}</button>
+            {% if post %}<button type="submit" form="delete-form" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer;">Delete</button>{% endif %}
+        </div>
     </div>
-    
     <div class="content-wrapper">
-        <textarea name="post-content" id="wysiwyg-editor">{{ post.content if post else '' }}</textarea>
+        <p><strong>Description</strong></p>
+        <textarea name="post-desc" required style="width: 100%;" rows="3">{{ post.desc if post else '' }}</textarea>
+        <p><strong>Tags (comma-separated)</strong></p>
+        <textarea name="post-tags" style="width: 100%;" rows="2">{{ post.tags.replace('|', ', ') if post and post.tags else '' }}</textarea>
+        <hr>
+        <textarea name="post-content" id="editor">{{ post.content | safe if post else '' }}</textarea>
+        
+        <div id="month-problem-fields" style="display: none; margin-top: 20px;">
+            <h3>Problem Solution</h3>
+            <input type="checkbox" name="is_solved" id="is_solved" {% if post and post.is_solved %}checked{% endif %}>
+            <label for="is_solved">Is this problem solved?</label>
+            <br><br>
+            <div id="solution-details" style="display: none;">
+                <label for="solver_name">Solver's Name:</label>
+                <input type="text" name="solver_name" value="{{ post.solver_name if post else '' }}" style="width: 100%;">
+                <br><br>
+                <label for="solution_content">Solution Content:</label>
+                <textarea name="solution_content" rows="10" style="width: 100%;">{{ post.solution_content if post else '' }}</textarea>
+            </div>
+        </div>
     </div>
-    
-    <input type="file" id="image" name="image" style="display:none;">
-
 </form>
+
+{% if post %}
+<form id="delete-form" action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this post?');"></form>
+{% endif %}
 {% endblock %}
 
 
 {% block scripts %}
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
+<script src="https://cdn.tiny.cloud/1/u5tjjdcv3n2n069nrntwq6u8clcexyo937ss8o3rlgut6yhu/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
 <script>
-    // Initialize CKEditor 5 with the MathType (LaTeX) plugin
-    CKEDITOR.ClassicEditor
-        .create(document.querySelector('#wysiwyg-editor'), {
-            // Add MathType to the plugins and toolbar
-            plugins: [
-                'Essentials', 'Paragraph', 'Bold', 'Italic', 'Underline', 'Strikethrough', 
-                'BlockQuote', 'Link', 'List', 'Table', 'Heading','MediaEmbed', 
-                'Code', 'CodeBlock', 'Image', 'ImageToolbar', 'ImageUpload'
-            ],
-            toolbar: [
-                'heading', '|',
-                'bold', 'italic', 'underline', 'strikethrough', '|',
-                'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
-                'imageUpload', 'insertTable', 'mediaEmbed', 'code', 'codeBlock', '|',
-                'math', '|', // The button to open the LaTeX editor
-                'undo', 'redo'
-            ],
-            // Configuration for the MathType plugin
-            math: {
-                engine: 'katex', // Use KaTeX for rendering
-                outputType: 'mathml', // Store as MathML for accessibility and consistency
-                forceOutputType: true,
-                enablePreview: true
-            }
+document.addEventListener('DOMContentLoaded', function() {
+    tinymce.init({
+        selector: '#editor',
+        height: 600,
+        plugins: 'autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image | code',
+        
+        // --- THIS IS THE KEY FOR IMAGE UPLOADS ---
+        images_upload_url: "{{ url_for('upload_image') }}",
+        images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', "{{ url_for('upload_image') }}");
+            
+            xhr.upload.onprogress = (e) => {
+                progress(e.loaded / e.total * 100);
+            };
+            
+            xhr.onload = () => {
+                if (xhr.status < 200 || xhr.status >= 300) {
+                    reject('HTTP Error: ' + xhr.status);
+                    return;
+                }
+            
+                const json = JSON.parse(xhr.responseText);
+            
+                if (!json || typeof json.location != 'string') {
+                    reject('Invalid JSON: ' + xhr.responseText);
+                    return;
+                }
+            
+                resolve(json.location);
+            };
+            
+            xhr.onerror = () => {
+                reject('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+            };
+            
+            const formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+            
+            xhr.send(formData);
         })
-        .catch(error => {
-            console.error(error);
-        });
+    });
+
+        // Toggle fields logic for Month-Problem
+        const postTypeSelector = document.getElementById('post-type-selector');
+        const monthProblemFields = document.getElementById('month-problem-fields');
+        const isSolvedCheckbox = document.getElementById('is_solved');
+        const solutionDetails = document.getElementById('solution-details');
+
+        function toggleFields() {
+            if (postTypeSelector.value === 'Month-Problem') {
+                monthProblemFields.style.display = 'block';
+                if (isSolvedCheckbox.checked) {
+                    solutionDetails.style.display = 'block';
+                } else {
+                    solutionDetails.style.display = 'none';
+                }
+            } else {
+                monthProblemFields.style.display = 'none';
+            }
+        }
+
+        postTypeSelector.addEventListener('change', toggleFields);
+        isSolvedCheckbox.addEventListener('change', toggleFields);
+        toggleFields(); // Run on page load
+    });
 </script>
 {% endblock %}

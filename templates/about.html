@@ -14,9 +14,12 @@
 
 
 {% block content %}
-
 <div class="div-separadora">
-    <h1>Sobre</h1>
+    <video autoplay muted playsinline>
+        <source src="{{ url_for('static', filename='videos/titles/about.webm') }}" type="video/webm">
+    </video>
+
+    <h1 class="fade-in-text"> $\text{Sobre}$ </h1>
 </div>
 
 <div class="central-content">
@@ -212,8 +215,5 @@
                 aba contato</a>. Também pode ser que sua dúvida esteja no <a href="/faq">FAQ</a>.</p>
     </div>
 
-
 </div>
-
-
 {% endblock %}

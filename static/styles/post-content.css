@@ -1,0 +1,36 @@
+/* static/styles/post-content.css */
+
+/* This is the main container for our blog post content */
+.post-body {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #333;
+}
+
+/* --- FIX FOR IMAGES --- */
+.post-body img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Prevents extra space below the image */
+    margin: 30px auto; /* Adds space above/below and centers the image */
+    border-radius: 5px;
+}
+/* ---------------------- */
+
+.post-body h1, .post-body h2, .post-body h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.post-body p {
+    margin-bottom: 1.2em;
+}
+
+.post-body blockquote {
+    border-left: 3px solid #ccc;
+    padding-left: 20px;
+    margin-left: 0;
+    font-style: italic;
+    color: #666;
+}

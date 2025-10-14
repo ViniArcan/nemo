@@ -30,7 +30,11 @@
 {% block content %}
 
 <div class="div-separadora">
-    <h1>FAQ</h1>
+    <video autoplay muted playsinline>
+        <source src="{{ url_for('static', filename='videos/titles/faq.webm') }}" type="video/webm">
+    </video>
+
+    <h1 class="fade-in-text"> $\text{FAQ}$ </h1>
 </div>
 
 <div class="central-content">
