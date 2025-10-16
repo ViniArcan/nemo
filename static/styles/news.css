@@ -42,15 +42,6 @@
     margin-top: 20px;
 }
 
-/* --- Header Video (from old file) --- */
-.div-separadora video {
-    position: absolute;
-    top: -108.5px;
-    width: 32.1%;
-    object-fit: cover; 
-    z-index: 1; 
-}
-
 @media (max-width: 768px) {
     .central-content {
         /* Reduce the large 10% margins to a smaller, fixed value */

@@ -9,14 +9,19 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/responsive-grid.js') }}"></script>
+<script src="{{ url_for('static', filename='js/video-size-adjust.js') }}"></script>
 {% endblock %}
 
 {% block content %}
+
 <div class="div-separadora">
-    <video autoplay muted playsinline>
+
+    <h1 id="text-to-measure"> $\text{Notícias e Premiações}$ </h1>
+
+    <video id="video-to-resize" autoplay muted playsinline>
         <source src="{{ url_for('static', filename='videos/titles/news.webm') }}" type="video/webm">
     </video>
-    <h1 class="fade-in-text"> $\text{Notícias e Premiações}$ </h1>
+
 </div>
 
 <div class="central-content">
@@ -45,8 +50,8 @@
         </div>
         
         <div class="button-container initially-hidden">
-            <button class="btn btn-primary show-more-btn">Mostrar mais</button>
-            <button class="btn btn-secondary show-less-btn initially-hidden">Mostrar menos</button>
+            <button class="btn btn-outline-primary show-more-btn">Mostrar mais</button>
+            <button class="btn btn-outline-secondary show-less-btn initially-hidden">Mostrar menos</button>
         </div>
     </div>
     {% endif %}
@@ -75,8 +80,8 @@
         </div>
 
         <div class="button-container initially-hidden">
-            <button class="btn btn-primary show-more-btn">Mostrar mais</button>
-            <button class="btn btn-secondary show-less-btn initially-hidden">Mostrar menos</button>
+            <button class="btn btn-outline-primary show-more-btn">Mostrar mais</button>
+            <button class="btn btn-outline-secondary show-less-btn initially-hidden">Mostrar menos</button>
         </div>
     </div>
     {% endif %}

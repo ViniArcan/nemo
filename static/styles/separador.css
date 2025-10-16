@@ -1,27 +1,22 @@
-/* --- 1. MAIN CONTAINER --- */
+/* 1. Create the positioning context on the parent */
 .div-separadora {
+    position: relative; /* This is the most important part! */
+    /* You can add other styles here like width, height, or padding */;
     height: 90px;
-    position: relative;
     display: grid;
     place-items: center;
     overflow: hidden;
-    background-color: rgb(253, 246, 241);
+    background-color: rgb(253, 246, 241)
 }
 
-
-/* --- 2. VIDEO ELEMENT --- */
+/* 3. Position the video to cover the parent perfectly */
 .div-separadora video {
-    position: absolute;
-    top: -116px;
-    width: 32.71%;
-    object-fit: cover; 
-    z-index: 1;
+  position: absolute; /* Allows JS to control its position on the page */
+  left: 50%; /* Move the video's left edge to the center of the screen/parent */
+  transform: translate(-50%, -50%); /* Crucial: Shifts the video back by half its own width and height, effectively centering it */
+  z-index: 0;
 }
-
-
-/* --- 3. TEXT ELEMENT (H1) --- */
-.div-separadora h1.fade-in-text {
-    position: relative; 
-    z-index: 2; 
-    color: rgba(0, 0, 0, 0);
+.div-separadora h1 {
+    color: transparent;
+    z-index: 1;          /* Ensure it's above the video */
 }

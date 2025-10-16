@@ -5,52 +5,68 @@ body {
 }
 
 
-
-
 /* --- 2. HERO SECTION (VIDEO HEADER) --- */
 
 .logocominfo {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    height: 90vh;
-    clip-path: polygon(100% 0, 0 0, 0% 100%, 100% 100%);
-    background-color: rgb(253, 246, 241);
+    display: flex; /* Activates Flexbox! */
+    flex-direction: column; /* Stacks children vertically */
+    align-items: center; /* Centers children horizontally */
+    justify-content: center; /* Centers children vertically within the available space */
+    justify-content: flex-start;
+
+    /* Ensures the section takes up at least the full height of the screen */
+    min-height: 100vh; 
+
+    /* Adds some space on the sides for smaller screens */
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    /* Smooths out the padding adjustment from the JavaScript */
+    transition: padding-top 0.2s ease-in-out; 
 }
 
-.video-container {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -20;
+.logocominfo video {
+  /* Set the video's width to be a percentage of its container. */
+  /* 90% is a good starting point, feel free to adjust. */
+  width: 90vw;
+
+  /* Set a maximum size. This stops the video from becoming huge on wide monitors. */
+  /* Adjust this value to what looks best for your design. */
+
+  /* This is crucial: it makes the video's height scale automatically */
+  /* to maintain the correct aspect ratio without distortion. */
+  height: auto;
 }
 
-.video-container video {
-    top: -20px;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    pointer-events: none;
-    /*background-color: transparent;*/
+/* Styling for the text block below the video */
+.logocominfo .textos-logo {
+    /* Adds some space between the video and the text */
+    margin-top: 2rem; 
+    text-align: center; /* Ensures text is centered if it wraps */
+    /*opacity: 0;
+    animation: fadeIn 0.5s ease-in-out 4.25s forwards;*/
 }
 
-.textos-logo {
-    position: absolute; top: 700px;
-    width: 50vw;
-    font-size: 1.7rem;
-    z-index: 0;
-    color: black;
-    text-align: center;
 
-    opacity: 0;
-    animation: fadeIn 0.5s ease-in-out 4.25s forwards;
-}
-
+/*
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+*/
+
+@media (max-width: 768px) {
+  .logocominfo {
+    /* Aligns content to the top (pushes it right below the navbar) */
+    justify-content: flex-start;
+
+    /* Allows the section to shrink to fit its content */
+    min-height: auto;
+
+    /* This is the new rule: add a specific amount of space at the bottom. */
+    /* Adjust this value to get the exact gap you want. */
+    padding-bottom: 4rem; /* For example, 64px of space */
+  }
 }
 
 .textos-logo h1 { /* This h1 is inside the hero, it's the big "NEMO" */

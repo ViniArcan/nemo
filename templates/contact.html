@@ -6,12 +6,32 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/contact.css') }}">
 {% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/video-size-adjust.js') }}"></script>
+
+<script>
+  // This function loads the map by moving the URL from data-src to src
+  function loadMap() {
+    const mapFrame = document.getElementById('google-map');
+    if (mapFrame && mapFrame.dataset.src) {
+        mapFrame.src = mapFrame.dataset.src;
+    }
+  }
+
+  // Trigger the map load after the main content is ready
+  window.addEventListener('DOMContentLoaded', loadMap);
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="div-separadora">
-     <video autoplay muted playsinline>
+
+    <h1 id="text-to-measure"> $\text{Contato}$ </h1>
+
+    <video id="video-to-resize" autoplay muted playsinline>
         <source src="{{ url_for('static', filename='videos/titles/contact.webm') }}" type="video/webm">
     </video>
-    <h1 class="fade-in-text"> $\text{Contato}$ </h1>
+
 </div>
 
 <div class="central-content">
@@ -68,11 +88,16 @@
 
     </div>
 
-    <div class="map-section">
-        <h2 class="section-title">Onde nos encontrar</h2>
-        <div class="map-container">
-            <iframe src="https://maps.google.com/maps?q=icmc&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=&amp;output=embed" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
+    <div class="map-container">
+        <iframe
+        width="600"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://maps.google.com/maps?q=icmc&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=&amp;output=embed">
+        </iframe>
     </div>
 
     <hr>

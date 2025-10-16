@@ -9,6 +9,7 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/video-size-adjust.js') }}"></script>
 
 <script>
     if (window.location.href.indexOf('#') != -1) {
@@ -29,11 +30,13 @@
 {% block content %}
 
 <div class="div-separadora">
-    <video autoplay muted playsinline>
+
+    <h1 id="text-to-measure"> $\text{FAQ}$ </h1>
+
+    <video id="video-to-resize" autoplay muted playsinline>
         <source src="{{ url_for('static', filename='videos/titles/faq.webm') }}" type="video/webm">
     </video>
 
-    <h1 class="fade-in-text"> $\text{FAQ}$ </h1>
 </div>
 
 <div class="central-content">
