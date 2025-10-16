@@ -17,7 +17,7 @@ python app.py
 
 ------------------------------------
 
-Tambêm, por quase toda duração da minha do desenvolvimento desse projeto eu estive escutando isso aqui:
+Tambêm, por quase toda duração da minha parte do desenvolvimento desse projeto eu estive escutando isso aqui:
 https://youtu.be/ZS5DeEqTgjM
 
 Então eu considero instrumental para a experiência de visitar o site escutrar esse vídeo. 
