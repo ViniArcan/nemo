@@ -1,3 +1,4 @@
-# NEMO Website
+# Site do NEMO
 
-This is the official website for the NEMO (Núcleo de Estudos de Matemática Olímpica) group. It includes a post system for news, activities, and monthly problems.
+O NEMO (Núcleo de Estudos de Matemática Olímpica) é um grupo de extensão focado em matemática olímpica e resolução de problemas. 
+Esse é o repositório do nosso site, que você pode acessar [aqui](nemo.icmc.usp.br).
