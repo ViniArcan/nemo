@@ -7,7 +7,7 @@ status: published
 
 # --- Problem Specific Fields ---
 is_solved: true
-solver_name: "fodastivo"
+solver_name: "Fodastico"
 solver_image: "uploads/solver-picture.jpg"
 solution_content: |
     ## Solution
@@ -19,4 +19,10 @@ solution_content: |
 
 ## Problem Statement
 
-Write the main body of the problem statement here.
+Here is the problem statement for this month:
+
+<a href="/static/pdfs/problema-outubro-2025.pdf" class="pdf-embed">Download the problem PDF.</a>
+
+And here is the solution:
+
+<a href="/static/pdfs/solucao-outubro-2025.pdf" class="pdf-embed">Download the solution PDF.</a>

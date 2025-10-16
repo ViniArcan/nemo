@@ -1,34 +1,94 @@
-.col.icon-container {
-    display: flex;
+/* --- General Section & Title Styles --- */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a6e1ff;
+    color: #070f43;
     text-align: center;
-    flex-direction: column;
 }
 
-#map-col iframe#map {
+/* --- Contact Card Grid --- */
+.contact-grid {
+    display: flex;           /* 1. Use Flexbox instead of Grid */
+    flex-wrap: wrap;         /* 2. Allow cards to wrap to the next line */
+    justify-content: center; /* 3. Center the cards horizontally */
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.contact-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.contact-card h3 {
+    font-weight: bold;
+    color: #070f43;
+    margin-top: 0;
+}
+
+.contact-card p {
+    color: #6c757d;
+}
+
+/* --- Specific Card Content Styles --- */
+.social-icons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.social-icons-container svg {
+    width: 32px;
+    height: 32px;
+    transition: opacity 0.3s ease;
+}
+
+.social-icons-container svg:hover {
+    opacity: 0.7;
+}
+
+.ig { color: #ac2bac; }
+.telegram-icon { color: #2aabde; }
+.mail-icon { color: #e54646; } /* For footer consistency, though not used here */
+
+.email-link {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.email-link:hover {
+    text-decoration: underline;
+}
+
+.location-text p {
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+/* --- Map Section --- */
+.map-section {
+    margin-top: 60px;
+}
+
+.map-container {
+    border-radius: 10px;
+    overflow: hidden; /* This makes the corners of the map rounded */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    line-height: 0; /* Fixes extra space below the iframe */
+}
+
+.map-container iframe {
     width: 100%;
-    height: 400px;
+    height: 450px;
     border: 0;
-}
-
-#map-col {
-    padding: 0;
-    border-left: none;
-}
-
-.row:has(#map-col) {
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-}
-
-.row html {
-    display: block;
-}
-
-.div-separadora video {
-    position: absolute;
-    top: -118.5px;
-    width: 33%;
-    object-fit: cover; 
-    z-index: 1; 
 }

@@ -54,3 +54,35 @@
 }
 .status-solved { color: #198754; font-weight: bold; font-size: large; margin-right: 15px;}
 .status-open { color: #dc3545; font-weight: bold; }
+
+
+/* --- Add this entire block for Mobile Responsiveness --- */
+
+@media (max-width: 768px) {
+
+    /* 1. The main container */
+    .problem-item {
+        flex-direction: column; /* Stacks items vertically instead of horizontally */
+        align-items: center;    /* Centers everything horizontally */
+        text-align: center;     /* Centers the text inside the info block */
+    }
+
+    /* 2. The image */
+    .problem-item-img {
+        width: 100%;            /* Allows the image to take the full width */
+        max-width: 300px;       /* Prevents it from being overly large */
+        height: auto;           /* Adjusts height automatically */
+        margin-bottom: 15px;    /* Adds space below the image */
+    }
+
+    /* 3. The solver info */
+    .problem-item-solver {
+        text-align: center;     /* Ensures the solver info is centered */
+        margin-top: 10px;
+    }
+
+    .problem-item-solver img,
+    .problem-item-solver p {
+        margin-right: 0;        /* Removes the right margin that was for desktop view */
+    }
+}

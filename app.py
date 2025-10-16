@@ -87,8 +87,8 @@ def index():
     published_pages = [p for p in pages if p.meta.get('status') == 'published']
     sorted_pages = sorted(published_pages, key=lambda p: p.meta.get('date', datetime.now()), reverse=True)
 
-    # Filter for the 5 most recent news posts by checking the path
-    news_posts = [p for p in sorted_pages if p.path.startswith('news/')][:5]
+    # Filter for the 3 most recent news posts by checking the path
+    news_posts = [p for p in sorted_pages if p.path.startswith('news/')]
 
     # Filter for the single most recent open month problem by checking the path
     problem_post = next((p for p in sorted_pages if p.path.startswith('months-problems/') and not p.meta.get('is_solved')), None)
@@ -100,7 +100,7 @@ def index():
         problem_post=problem_post
     )
 
-    
+    ''' # Previous version without path checks
     problem_post = next((p for p in sorted_pages if p.meta.get('post_type') == 'Month-Problem' and not p.meta.get('is_solved')), None)
 
     return render_template(
@@ -109,6 +109,7 @@ def index():
         news_posts=news_posts,
         problem_post=problem_post # Pass the single post object
     )
+    '''
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -180,10 +181,19 @@ def account_settings():
 def about():
     return render_template('about.html', logado=current_user.is_authenticated)
 
+@app.route('/materials')
+def materials():
+    return render_template('materials.html', logado=current_user.is_authenticated)
 
-@app.route('/faq')
-def faq():
-    return render_template('faq.html', logado=current_user.is_authenticated)
+@app.route('/months-problems')
+def months_problems():
+    # Fetch all published "Month-Problem" posts from the file system
+    problem_pages = [p for p in pages if p.meta.get('status') == 'published' and p.path.startswith('months-problems/') and p.meta.get('post_type') == 'Month-Problem']
+    
+    # Sort by 'is_solved' (False comes first), then by date (newest first)
+    sorted_problems = sorted(problem_pages, key=lambda p: (p.meta.get('is_solved', False), p.meta['date']), reverse=False)
+    
+    return render_template('months-problems.html', logado=current_user.is_authenticated, post_list=sorted_problems)
 
 @app.route('/news')
 def news():
@@ -204,24 +214,18 @@ def news():
         other_news_posts=other_news_posts
     )
 
-@app.route('/months-problems')
-def months_problems():
-    # Fetch all published "Month-Problem" posts from the file system
-    problem_pages = [p for p in pages if p.meta.get('status') == 'published' and p.path.startswith('months-problems/') and p.meta.get('post_type') == 'Month-Problem']
-    
-    # Sort by 'is_solved' (False comes first), then by date (newest first)
-    sorted_problems = sorted(problem_pages, key=lambda p: (p.meta.get('is_solved', False), p.meta['date']), reverse=False)
-    
-    return render_template('months-problems.html', logado=current_user.is_authenticated, post_list=sorted_problems)
+@app.route('/team')
+def team():
+    return render_template('team.html', logado=current_user.is_authenticated)
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', logado=current_user.is_authenticated)
 
 @app.route('/contact')
 def contact():
     return render_template('contact.html', logado=current_user.is_authenticated)
 
-
-@app.route('/materials')
-def materials():
-    return render_template('materials.html', logado=current_user.is_authenticated)
 
 # --- Post Routes ---
 @app.route('/post/<path:path>')
@@ -334,4 +338,4 @@ def upload_image():
 # Main Execution
 # -----------------------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(host='localhost', port=5000)
+    app.run(host='0.0.0.0', port=5000)

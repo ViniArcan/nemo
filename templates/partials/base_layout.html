@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/pdf-viewer.css') }}">
 
 
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
@@ -104,14 +105,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/news">Notícias e Premiações</a>
                 </li>
-                <li class="nav-item"><a href="/faq" class="nav-link">FAQ</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/team">Equipe</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/faq" class="nav-link">FAQ</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/contact">Contato</a>
                 </li>
             </ul>
             
             <ul class="navbar-nav">
-            {% if not logado %}
+                {% if not logado %}
                     <!--  <li class="nav-item"><a href="/login" class="nav-link">Login</a></li> -->
                 {% endif %}
 
@@ -185,6 +191,10 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/navbar-color-controller.js') }}"></script>
+
+    <script type="module" src="{{ url_for('static', filename='pdfjs/build/pdf.mjs') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/pdf-embed.js') }}"></script>
+
     {% block scripts %}
 
     {% endblock %}
@@ -215,52 +225,47 @@
     </script>-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Get the current page's path (e.g., "/about", "/news")
-        const currentPath = window.location.pathname;
-        
-        // Find all the links in the main navbar
-        const navLinks = document.querySelectorAll('#navbarSupportedContent .nav-link');
+        crossorigin="anonymous">
+    </script>
 
-        navLinks.forEach(link => {
-            // Get the path from the link's href attribute
-            const linkPath = new URL(link.href).pathname;
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the current page's path (e.g., "/about", "/news")
+            const currentPath = window.location.pathname;
+            
+            // Find all the links in the main navbar
+            const navLinks = document.querySelectorAll('#navbarSupportedContent .nav-link');
 
-            // If the link's path matches the current page's path, add the 'active' class
-            if (linkPath === currentPath) {
-                link.classList.add('active');
+            navLinks.forEach(link => {
+                // Get the path from the link's href attribute
+                const linkPath = new URL(link.href).pathname;
+
+                // If the link's path matches the current page's path, add the 'active' class
+                if (linkPath === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Find the video element on the page
+            const video = document.querySelector('.div-separadora video');
+
+            // Check if the video element exists before running the code
+            if (video) {
+                // Get the original source path
+                const originalSrc = video.querySelector('source').src;
+                
+                // Add a unique timestamp to the end of the URL to bypass the cache
+                video.querySelector('source').src = `${originalSrc}?t=${Date.now()}`;
+                
+                // Tell the video element to load the new source
+                video.load();
             }
         });
-    });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous">
-</script>
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Find the video element on the page
-        const video = document.querySelector('.div-separadora video');
-
-        // Check if the video element exists before running the code
-        if (video) {
-            // Get the original source path
-            const originalSrc = video.querySelector('source').src;
-            
-            // Add a unique timestamp to the end of the URL to bypass the cache
-            video.querySelector('source').src = `${originalSrc}?t=${Date.now()}`;
-            
-            // Tell the video element to load the new source
-            video.load();
-        }
-    });
-</script>
+    </script>
 
 </body>
-
 </html>

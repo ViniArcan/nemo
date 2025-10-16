@@ -1,37 +1,69 @@
-.img-xadrez {
-    width: min(100%, 300px);
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+.team-section {
+    margin-bottom: 60px;
 }
 
-.col {
-    min-width: 200px;
-    margin-left: auto;
-    margin-right: auto;
+.team-section {
+    margin-bottom: 60px;
+    text-align: center; /* Centers all inline content, including the h2 */
 }
 
-.paragraph {
-    color: gray;
-    font-style: italic;
+.team-section h2 {
+    display: inline-block; /* Shrinks the element to fit the text */
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a6e1ff;
+    color: #070f43;
 }
 
-.pergunta::before {
-    content: "";
-    background-color: gray;
-    height: 2px;
+.team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 30px;
+}
+
+.member-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.member-card img {
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.member-info {
+    padding: 20px 15px;
+}
+
+.member-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.member-email {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 5px;
 }
 
 .div-separadora video {
     position: absolute;
-    top: -116px;
-    width: 32.71%;
+    top: -110px;
+    width: 32.4%;
     object-fit: cover; 
     z-index: 1;
 }
