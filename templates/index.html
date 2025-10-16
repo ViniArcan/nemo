@@ -8,35 +8,6 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
 <script src="{{ url_for('static', filename='js/responsive-grid.js') }}"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Select all the image containers we want to animate
-    const targets = document.querySelectorAll('.img-container');
-
-    const observerOptions = {
-        root: null, // observes intersections relative to the viewport
-        threshold: 0.2 // trigger when 20% of the element is visible
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            // If the element is intersecting (visible)
-            if (entry.isIntersecting) {
-                // Add the 'visible' class to trigger the animation
-                entry.target.classList.add('visible');
-                // Stop observing this element so the animation only happens once
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Start observing each target element
-    targets.forEach(target => {
-        observer.observe(target);
-    });
-});
-</script>
 {% endblock %}
 
 {% block content %}
@@ -47,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
     <div class="video-container">
         <video autoplay muted>
-            <source src="{{ url_for('static', filename='/videos/FishCurve.webm') }}" type="video/mp4">
+            <source src="{{ url_for('static', filename='/videos/FishCurve.webm') }}" type="video/webm">
             Seu navegador não suporta vídeos!
         </video>
     </div>

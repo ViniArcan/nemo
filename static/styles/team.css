@@ -1,14 +1,11 @@
+/* --- 1. SECTION STYLES --- */
 .team-section {
     margin-bottom: 60px;
-}
-
-.team-section {
-    margin-bottom: 60px;
-    text-align: center; /* Centers all inline content, including the h2 */
+    text-align: center; /* Centers all inline content */
 }
 
 .team-section h2 {
-    display: inline-block; /* Shrinks the element to fit the text */
+    display: inline-block; /* Shrinks the border to fit the text */
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 30px;
@@ -17,6 +14,8 @@
     color: #070f43;
 }
 
+
+/* --- 2. MEMBER GRID AND CARD STYLES --- */
 .team-grid {
     display: flex;
     flex-wrap: wrap;
@@ -31,6 +30,7 @@
     text-align: center;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 220px; /* Give cards a consistent base width */
 }
 
 .member-card:hover {
@@ -40,7 +40,7 @@
 
 .member-card img {
     width: 100%;
-    height: 200px;
+    height: 220px; /* Made height match width for a square look */
     object-fit: cover;
 }
 
@@ -58,12 +58,4 @@
     font-size: 0.9rem;
     color: #6c757d;
     margin-top: 5px;
-}
-
-.div-separadora video {
-    position: absolute;
-    top: -110px;
-    width: 32.4%;
-    object-fit: cover; 
-    z-index: 1;
 }

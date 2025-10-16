@@ -33,7 +33,7 @@
 }
 
 /* --- Button and Hidden Post Styles --- */
-.hidden-post, .initially-hidden {
+.hidden-post, .initially-hidden, .js-hidden-post, .show-less-btn.initially-hidden, .button-container.initially-hidden {
     display: none;
 }
 
@@ -49,20 +49,6 @@
     width: 32.1%;
     object-fit: cover; 
     z-index: 1; 
-}
-
-.js-hidden-post {
-    display: none;
-}
-
-/* This hides the button container until our JS decides it's needed */
-.button-container.initially-hidden {
-    display: none;
-}
-
-/* This hides the "Show Less" button by default */
-.show-less-btn.initially-hidden {
-    display: none;
 }
 
 @media (max-width: 768px) {

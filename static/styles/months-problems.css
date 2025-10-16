@@ -1,12 +1,4 @@
-.div-separadora video {
-    position: absolute;
-    top: -112.5px;
-    width: 32%;
-    object-fit: cover; 
-    z-index: 1; /* Send video to the back layer */
-}
-
-
+/* --- 1. MAIN PROBLEM ITEM STYLES --- */
 .problem-item {
     display: flex;
     align-items: flex-start;
@@ -15,74 +7,94 @@
     border-bottom: 1px solid #dee2e6;
     text-decoration: none;
     color: #212529;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
 }
+
 .problem-item:hover {
     background-color: #f8f9fa;
 }
+
+/* Styles for the larger, open problem at the top */
 .open-problem .problem-item-img {
-    width: 300px; /* Make the image larger for open problems */
+    width: 300px;
     height: 300px;
 }
+
 .open-problem .problem-item-info h5 {
     font-size: 1.5em; /* Make the title larger */
 }
+
+
+/* --- 2. INTERNAL COMPONENT STYLES --- */
 .problem-item-img {
-    width: 200px; /* Adjust image size */
+    width: 200px;
     height: 200px;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevents the image from shrinking */
 }
+
 .problem-item-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 5px;
 }
+
 .problem-item-info {
-    flex-grow: 1;
+    flex-grow: 1; /* Allows the info section to take up remaining space */
 }
+
 .problem-item-info h5 {
     margin: 0 0 5px 0;
 }
+
 .problem-item-info p {
     margin: 0;
     font-size: 0.9em;
     color: #6c757d;
 }
+
 .problem-item-solver {
     flex-shrink: 0;
     text-align: right;
 }
-.status-solved { color: #198754; font-weight: bold; font-size: large; margin-right: 15px;}
-.status-open { color: #dc3545; font-weight: bold; }
 
 
-/* --- Add this entire block for Mobile Responsiveness --- */
+/* --- 3. STATUS INDICATORS --- */
+.status-solved {
+    color: #198754;
+    font-weight: bold;
+    font-size: large;
+    margin-right: 15px;
+}
 
+.status-open {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+
+/* --- 4. RESPONSIVE ADJUSTMENTS FOR MOBILE --- */
 @media (max-width: 768px) {
-
-    /* 1. The main container */
     .problem-item {
-        flex-direction: column; /* Stacks items vertically instead of horizontally */
+        flex-direction: column; /* Stacks items vertically */
         align-items: center;    /* Centers everything horizontally */
-        text-align: center;     /* Centers the text inside the info block */
+        text-align: center;
     }
 
-    /* 2. The image */
     .problem-item-img {
-        width: 100%;            /* Allows the image to take the full width */
-        max-width: 300px;       /* Prevents it from being overly large */
-        height: auto;           /* Adjusts height automatically */
-        margin-bottom: 15px;    /* Adds space below the image */
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        margin-bottom: 15px;
     }
 
-    /* 3. The solver info */
     .problem-item-solver {
-        text-align: center;     /* Ensures the solver info is centered */
+        text-align: center;
         margin-top: 10px;
     }
 
     .problem-item-solver img,
     .problem-item-solver p {
-        margin-right: 0;        /* Removes the right margin that was for desktop view */
+        margin-right: 0;
     }
 }
