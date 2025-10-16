@@ -146,9 +146,10 @@ def materials(): return render_template('materials.html', logado=current_user.is
 
 @app.route('/months-problems')
 def months_problems():
-    problem_pages = [p for p in pages if p.meta.get('status') == 'published' and p.path.startswith('months-problems/')]
+    # Fetch all published "Month-Problem" posts from the file system
+    problem_pages = [p for p in pages if p.meta.get('status') == 'published' and p.path.startswith('months-problems/') and p.meta.get('post_type') == 'Month-Problem']
     # Sort by 'is_solved' (False comes first), then by date (newest first)
-    sorted_problems = sorted(problem_pages, key=lambda p: (p.meta.get('is_solved', False), p.meta.get('date')), reverse=True)
+    sorted_problems = sorted(problem_pages, key=lambda p: (p.meta.get('is_solved', False), p.meta['date']), reverse=False)
     return render_template('months-problems.html', logado=current_user.is_authenticated, post_list=sorted_problems)
 
 @app.route('/news')
