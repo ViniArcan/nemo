@@ -1,4 +1,4 @@
-/* --- General Section & Title Styles --- */
+/* --- 1. GENERAL SECTION & TITLE STYLES --- */
 .section-title {
     font-size: 2.5rem;
     font-weight: bold;
@@ -9,11 +9,12 @@
     text-align: center;
 }
 
-/* --- Contact Card Grid --- */
+
+/* --- 2. CONTACT CARD GRID --- */
 .contact-grid {
-    display: flex;           /* 1. Use Flexbox instead of Grid */
-    flex-wrap: wrap;         /* 2. Allow cards to wrap to the next line */
-    justify-content: center; /* 3. Center the cards horizontally */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 30px;
     margin-bottom: 60px;
 }
@@ -25,6 +26,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     text-align: center;
     border: 1px solid #eee;
+    width: 320px; /* Added a consistent width for better alignment */
 }
 
 .contact-card h3 {
@@ -37,7 +39,8 @@
     color: #6c757d;
 }
 
-/* --- Specific Card Content Styles --- */
+
+/* --- 3. SPECIFIC CARD CONTENT --- */
 .social-icons-container {
     display: flex;
     justify-content: center;
@@ -57,13 +60,15 @@
 
 .ig { color: #ac2bac; }
 .telegram-icon { color: #2aabde; }
-.mail-icon { color: #e54646; } /* For footer consistency, though not used here */
+.mail-icon { color: #e54646; }
 
 .email-link {
     font-weight: bold;
     font-size: 1.2rem;
     color: #0d6efd;
     text-decoration: none;
+    display: block; /* Ensures proper spacing */
+    margin-top: 20px;
 }
 
 .email-link:hover {
@@ -75,16 +80,17 @@
     line-height: 1.5;
 }
 
-/* --- Map Section --- */
+
+/* --- 4. MAP SECTION --- */
 .map-section {
     margin-top: 60px;
 }
 
 .map-container {
     border-radius: 10px;
-    overflow: hidden; /* This makes the corners of the map rounded */
+    overflow: hidden;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    line-height: 0; /* Fixes extra space below the iframe */
+    line-height: 0;
 }
 
 .map-container iframe {

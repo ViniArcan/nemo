@@ -1,24 +1,15 @@
-
-@media only screen and (min-width: 500px) {
-    nav {
-        padding-left: 10%;
-        padding-right: 10%;
-    }
-}
-
+/* --- 1. MAIN NAVIGATION BAR --- */
 nav {
-    position: sticky; /* Necessary for the pseudo-element */
-    top: 0; /* Stick to the top */
-    z-index: 1000; /* Ensure it stays above other content */
-    transition: background-color 0.5s; /* Smooth transition for background color */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.5s;
     background-color: rgb(253, 246, 241); 
-    /* background: linear-gradient(to bottom, rgb(253, 246, 241) 70%, transparent 100%);*/
 }
 
-nav:hover::before {
-    opacity: 1; /* Fade the gradient in */
-}
 
+/* --- 2. HOVER EFFECT --- */
+/* This pseudo-element creates the gradient overlay */
 nav::before {
     content: '';
     position: absolute;
@@ -26,15 +17,20 @@ nav::before {
     left: 0;
     width: 100%;
     height: 100%;
-
     background: linear-gradient(to bottom, #d3efff 70%, transparent 100%);
-    background-color: rgb(253, 246, 241,0);
-    
-    opacity: 0; /* Start fully transparent */
-    transition: opacity 0.5s; /* Animate the fade */
-    z-index: -1; /* Place the gradient behind the nav content */
+    background-color: rgba(253, 246, 241, 0);
+    opacity: 0; /* Starts transparent */
+    transition: opacity 0.5s;
+    z-index: -1; /* Sits behind the nav content */
 }
 
+/* This fades the gradient in on hover */
+nav:hover::before {
+    opacity: 1;
+}
+
+
+/* --- 3. BRAND ICON --- */
 span.nemo-icon {
     background-image: url('../imgs/fotonemo.webp');
     background-size: contain;
@@ -43,9 +39,20 @@ span.nemo-icon {
     display: inline-block;
 }
 
+
+/* --- 4. ACTIVE LINK STYLING --- */
 .navbar-nav .nav-link.active {
-    background-color: #a6e1ff; /* The new background color */
-    color: rgb(7, 15, 67) !important;      /* White text for contrast */
-    border-radius: 8px;           /* Rounded corners for a button look */
-    text-shadow: none;            /* Remove the glow for a cleaner look */
+    background-color: #a6e1ff;
+    color: rgb(7, 15, 67) !important;
+    border-radius: 8px;
+    text-shadow: none;
+}
+
+
+/* --- 5. RESPONSIVE ADJUSTMENTS --- */
+@media only screen and (min-width: 500px) {
+    nav {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
 }

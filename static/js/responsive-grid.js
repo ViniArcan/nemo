@@ -27,7 +27,6 @@ function setupResponsiveShowcase(showcase) {
         if (hiddenCount > 0) {
             buttonContainer.classList.remove('initially-hidden');
             if (showMoreBtn) showMoreBtn.style.display = 'inline-block';
-            // FIX: Only try to hide the "Show Less" button if it exists
             if (showLessBtn) showLessBtn.style.display = 'none';
         } else {
             buttonContainer.classList.add('initially-hidden');
@@ -47,7 +46,6 @@ function setupResponsiveShowcase(showcase) {
         }
     }
 
-    // FIX: Only add a listener for the "Show Less" button if it exists
     if (showLessBtn) {
         showLessBtn.addEventListener('click', () => {
             updateVisibleCards();

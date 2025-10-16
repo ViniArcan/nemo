@@ -1,8 +1,11 @@
+/* --- 1. MAIN CONTENT CONTAINER --- */
 .post-content-container {
     margin-left: 10%;
     margin-right: 10%;
 }
 
+
+/* --- 2. CONTENT ELEMENTS --- */
 .post-content-container .description {
     text-align: center;
     color: gray;

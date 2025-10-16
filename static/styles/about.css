@@ -1,11 +1,13 @@
-/* --- New Section Styling --- */
+/* --- 1. GENERAL SECTION STYLING --- */
 .about-section {
     padding: 60px 0;
     border-bottom: 1px solid #eee;
 }
+
 .about-section:last-of-type {
     border-bottom: none;
 }
+
 .about-section h2 {
     font-size: 2.5rem;
     font-weight: bold;
@@ -13,32 +15,38 @@
     margin-bottom: 20px;
 }
 
-/* --- Two-Column Intro Section --- */
+
+/* --- 2. "WHO WE ARE" TWO-COLUMN INTRO --- */
 .about-intro {
     display: flex;
     align-items: center;
     gap: 50px; /* Space between text and image */
 }
+
 .about-text-content {
     flex: 1; /* Takes up 50% of the space */
 }
+
 .about-image-container {
     flex: 1; /* Takes up the other 50% */
     max-width: 500px;
 }
+
 .about-image-container img {
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
-/* --- Problem Example Section --- */
+
+/* --- 3. PROBLEM EXAMPLE SECTION --- */
 .problem-example {
     background-color: #f8f9fa; /* Light grey background */
     padding: 40px;
     border-radius: 10px;
     margin: 20px -40px; /* Make it slightly wider than the main content */
 }
+
 .problem-statement {
     font-size: 1.2rem;
     font-style: italic;
@@ -47,11 +55,10 @@
     margin-bottom: 30px;
 }
 
-/* --- Chess Images Grid --- */
 .chess-image {
-    max-width: 250px; /* Adjust this value to make images bigger or smaller */
+    max-width: 250px;
     height: auto;
-    margin: 0 auto; /* This ensures the image is centered within its column */
+    margin: 0 auto;
 }
 
 .img-xadrez {
@@ -60,25 +67,20 @@
     display: block;
     border-radius: 5px;
 }
+
 .accordion {
     margin-top: 30px;
 }
 
-/* --- Responsive Adjustments --- */
+
+/* --- 4. RESPONSIVE ADJUSTMENTS --- */
 @media (max-width: 992px) {
     .about-intro {
         flex-direction: column; /* Stacks image and text vertically */
     }
+
     .problem-example {
         margin: 20px 0; /* Remove negative margins on small screens */
         padding: 20px;
     }
-}
-
-.div-separadora video {
-    position: absolute;
-    top: -116px;
-    width: 32.71%;
-    object-fit: cover; 
-    z-index: 1;
 }

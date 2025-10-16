@@ -1,19 +1,4 @@
-.post-container {
-    padding-bottom: 5px;
-    padding-top: 5px;
-    box-sizing: content-box;
-    
-}
-
-.post-container .col .resumo-post {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.post-container .col {
-    margin-bottom: 20px;
-}
-
+/* --- 1. MAIN CARD STYLES --- */
 .resumo-post {
     width: 300px;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
@@ -33,32 +18,8 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
 }
 
-.resumo-post a {
-    display: block;
-    margin-top: auto;
-    bottom: 0;
-}
 
-.resumo-post .post-resumo-texto {
-    position: relative;
-    padding: 10px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.resumo-post img {
-    position: absolute; /* Take your picture out of the flow */
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0; /* Make the picture taking the size of it's parent */
-    width: 100%; /* This if for the object-fit */
-    height: 100%; /* This if for the object-fit */
-    object-fit: cover; /* Equivalent of the background-size: cover; of a background-image */
-    object-position: center;
-}
-
+/* --- 2. CARD IMAGE STYLES --- */
 .resumo-post .post-img-container {
     position: relative;
     width: 100%;
@@ -68,17 +29,44 @@
     padding: 0;
 }
 
+/* Creates a square aspect ratio for the image container */
 .post-img-container:after {
     content: "";
     display: block;
-    padding-bottom: 100%; /* The padding depends on the width, not on the height, so with a padding-bottom of 100% you will get a square */
+    padding-bottom: 100%;
 }
 
-.post-showcase {
-    margin-left: 10%;
-    margin-right: 10%;
+/* Makes the image fill the square container */
+.resumo-post img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
+
+/* --- 3. CARD TEXT STYLES --- */
+.resumo-post .post-resumo-texto {
+    position: relative;
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.resumo-post a {
+    display: block;
+    margin-top: auto;
+    bottom: 0;
+}
+
+
+/* --- 4. BUTTON STYLES --- */
 .btn-saiba-mais {
     display: inline-block;
     margin-top: auto; /* Pushes the button to the bottom of the card */
@@ -94,4 +82,26 @@
 .btn-saiba-mais:hover {
     background-color: #0056b3;
     color: white;
+}
+
+
+/* --- 5. OLD LAYOUT STYLES (FROM PREVIOUS DESIGNS) --- */
+.post-container {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    box-sizing: content-box;
+}
+
+.post-container .col .resumo-post {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-container .col {
+    margin-bottom: 20px;
+}
+
+.post-showcase {
+    margin-left: 10%;
+    margin-right: 10%;
 }
