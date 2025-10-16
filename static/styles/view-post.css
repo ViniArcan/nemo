@@ -1,0 +1,122 @@
+/* Main container for the entire post view */
+.post-container {
+    background-color: #fff; /* White background for the content area */
+}
+
+/* --- The New Header --- */
+.post-header {
+    background-color: #070f43; /* Dark blue fallback for posts without an image */
+    background-size: cover;
+    background-position: center;
+    padding: 80px 20px;
+    text-align: center;
+    position: relative;
+    color: white;
+}
+
+/* Semi-transparent overlay to ensure text is always readable */
+.header-overlay {
+    position: relative;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    padding: 20px;
+    border-radius: 5px;
+    display: inline-block; /* Shrinks to fit content */
+}
+
+.post-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* --- Metadata Styling --- */
+.post-meta {
+    margin-top: 15px;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.post-meta span {
+    margin: 0 10px;
+}
+
+
+.post-meta .solved {
+    color: #5dffb9; /* A vibrant green for solved status */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.post-meta .open {
+    color: #ff8a8a; /* A light red for open status */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* --- Main Content Area --- */
+.post-body-wrapper {
+    /* This creates the nice centered column for the text */
+    max-width: 800px;
+    margin: -50px auto 50px auto; /* Pulls the content up slightly over the header */
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    position: relative; /* Ensures it sits above the header's background */
+    z-index: 3;
+}
+
+.pdf-download-btn {
+    display: block;
+    width: fit-content;
+    margin: 20px 0 10px auto; /* Centers the button */
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.pdf-download-btn:hover {
+    background-color: #0056b3;
+    color: white; /* Ensures text stays white on hover */
+}
+
+.pdf-viewer-container canvas {
+    width: 100%;
+    height: auto;
+    display: block; /* Ensures proper block-level layout */
+    margin-bottom: 10px; /* Adds space below each page */
+}
+
+.solver-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.solver-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover;
+    margin: 0 auto 15px auto; /* Centers the image */
+    border: 4px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.solver-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #198754; /* Green color for solved status */
+    margin: 0;
+}
+
+.solver-separator {
+    margin-bottom: 40px;
+    border-top: 1px solid #eee;
+}

@@ -7,6 +7,36 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/responsive-grid.js') }}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Select all the image containers we want to animate
+    const targets = document.querySelectorAll('.img-container');
+
+    const observerOptions = {
+        root: null, // observes intersections relative to the viewport
+        threshold: 0.2 // trigger when 20% of the element is visible
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            // If the element is intersecting (visible)
+            if (entry.isIntersecting) {
+                // Add the 'visible' class to trigger the animation
+                entry.target.classList.add('visible');
+                // Stop observing this element so the animation only happens once
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Start observing each target element
+    targets.forEach(target => {
+        observer.observe(target);
+    });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -24,64 +54,67 @@
 </div>
 
 <div class="conteudo">
-    <div class="informacoes">
-        <div class="o-que-e">
-            <div class="flex-with-img row">
-                <div class="col">
-                    <h1>Sobre nós</h1>
-                    <p>O <strong>NEMO</strong> é um grupo de extensão do ICMC, sediado na USP de São Carlos, cujo foco é realizar
-                        <strong>treinamentos para olimpíadas de matemática universitárias</strong>.
-                    </p>
-                    <p>Realizamos encontros semanais durante os quais listas de problemas de matemática olímpica são
-                        discutidos e resolvidos. Acreditamos que, quando todos estão trabalhando nesses problemas,
-                        ideias de várias pessoas se combinam para dar origem a uma solução. Por isso, <b>todos são
-                            bem-vindos</b> a participar dos nossos encontros.</p>
-                </div>
-                <div class="img-container col">
-                    <div class="image">
-                        <img src="{{ url_for('static', filename='imgs/index-imgs/imc_jornalusp_grupo_nemo_matematica_icmc_usp.webp') }}"
-                            alt="">
+    <div class="tab-container">
+        <ul class="nav nav-tabs" id="introTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="about-us-tab" data-bs-toggle="tab" data-bs-target="#about-us-pane" type="button" role="tab" aria-selected="true">
+                    Sobre Nós
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="olympiads-tab" data-bs-toggle="tab" data-bs-target="#olympiads-pane" type="button" role="tab" aria-selected="false">
+                    O que são Olimpíadas?
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="introTabsContent">
+            <div class="tab-pane fade show active" id="about-us-pane" role="tabpanel">
+                <div class="tab-pane-content">
+                    <div class="tab-text-content">
+                        <h1>Sobre Nós</h1>
+                        <p>O <strong>NEMO</strong> é um grupo de extensão do ICMC, sediado na USP de São Carlos, cujo foco é realizar
+                            <strong>treinamentos para olimpíadas de matemática universitárias</strong>.
+                        </p>
+                        <p>Realizamos encontros semanais durante os quais listas de problemas de matemática olímpica são
+                            discutidos e resolvidos. Acreditamos que, quando todos estão trabalhando nesses problemas,
+                            ideias de várias pessoas se combinam para dar origem a uma solução. Por isso, <b>todos são
+                                bem-vindos</b> a participar dos nossos encontros.
+                            </p>
+                        <a role="button" class="btn btn-outline-primary" href="/about"> Saiba mais </a>
                     </div>
-                    <div class="paragraph">
-                        <p>Alguns dos nossos membros que foram premiados na International Mathematics Competition (IMC)
-                            2022</p>
+                    <div class="tab-image-container">
+                        <img src="{{ url_for('static', filename='imgs/index-imgs/imc_jornalusp_grupo_nemo_matematica_icmc_usp.webp') }}" alt="Membros do NEMO premiados na IMC 2022">
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="competicoes">
-            <div class="flex-with-img row">
-                <div class="img-container col">
-                    <div class="image">
-                        <img src="{{ url_for('static', filename='imgs/index-imgs/obm-2017-medalhas.jpg')}}" alt="">
-                    </div>
-                    <div class="paragraph">
-                        <p>Medalhas de bronze, prata e ouro da Olimpíada Brasileira de Matemática (OBM)</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <h1>O que são olimpíadas de matemática?</h1>
-                    <p>Olimpíadas de matemática são competições de matemática que desafiam os competidores a resolverem
-                        problemas mais difíceis que aqueles tipicamente utilizados em provas normais, isto é, aquelas
-                        que testam conhecimentos específicos.</p>
-                    <p>Diferentemente dessas provas, os problemas das olimpíadas envolvem o <strong> uso de argumentos
-                            matemáticos de maneira criativa e esperta, o que faz com que sejam muito
-                            divertidos</strong>.</p>
-                    <a role="button" class="btn btn-primary" href="/about#como-sao-problemas"> Saiba mais </a>
-                </div>
 
+            <div class="tab-pane fade" id="olympiads-pane" role="tabpanel">
+                <div class="tab-pane-content">
+                    <div class="tab-image-container">
+                        <img src="{{ url_for('static', filename='imgs/index-imgs/obm-2017-medalhas.webp') }}" alt="Medalhas da Olimpíada Brasileira de Matemática">
+                    </div>
+                    <div class="tab-text-content">
+                        <h1>O que são olimpíadas de matemática?</h1>
+                        <p>Olimpíadas de matemática são competições de matemática que desafiam os competidores a resolverem
+                            problemas mais difíceis que aqueles tipicamente utilizados em provas normais, isto é, aquelas
+                            que testam conhecimentos específicos.</p>
+                        <p>Diferentemente dessas provas, os problemas das olimpíadas envolvem o <strong> uso de argumentos
+                                matemáticos de maneira criativa e esperta, o que faz com que sejam muito
+                                divertidos</strong>.</p>
+                        <a role="button" class="btn btn-outline-primary" href="/about#como-sao-problemas"> Saiba mais </a>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
 
     <div class="noticias">
-        <a href="/news" style="color: rgb(24, 24, 24); text-shadow: 1px 1px rgba(48, 48, 48, 0.5); text-decoration: none;" > <h1>Notícias e Premiações</h1> </a>
-        
-        <div class="horizontal-scroll-wrapper">
-            <div class="post-container-scrollable">
+        <section class="latest-news">
+            <h2 class="section-title">Últimas Notícias</h2>
+            <div class="post-showcase">
                 {% for post in news_posts %}
-                    <div class="col-scrollable">
+                    <div class="news-post-item"> 
                         <div class="resumo-post">
                             <a href="{{ url_for('view_post', path=post.path) }}" style="text-decoration: none; color: inherit;">
                                 {% if post.meta.image %}
@@ -98,33 +131,28 @@
                     </div>
                 {% endfor %}
             </div>
-        </div>
+            
+            <div class="button-container initially-hidden">
+                <a href="/news" class="btn btn-outline-primary btn-lg show-more-btn">Ver Todas as Notícias</a>
+            </div>
+        </section>
     </div>
 
     <div class="ultimo-problema-mes">
         {% if problem_post %}
-            <div class="problem-container">
-                <div class="problem-image">
-                    <img src="{{ url_for('static', filename=problem_post.meta.image) }}" alt="Problema do Mês">
-                </div>
-                <div class="problem-text">
-                    <h1>Problema do Mês</h1>
-                    <hr>
-                    <h2>{{ problem_post.meta.title }}</h2>
-                    <p>{{ problem_post.meta.desc }}</p>
-                    <a href="{{ url_for('view_post', path=problem_post.path) }}" class="btn-saiba-mais">Saiba mais</a>
-                </div>
+        <section class="problem-showcase">
+            {% if problem_post.meta.image %}
+            <div class="problem-image" style="background-image: url('{{ url_for('static', filename=problem_post.meta.image) }}');"></div>
+            {% endif %}
+            <div class="problem-content">
+                <h2 class="section-title">Problema do Mês</h2>
+                <h3 class="problem-title">{{ problem_post.meta.title }}</h3>
+                <p class="problem-desc">{{ problem_post.meta.desc }}</p>
+                <a href="{{ url_for('view_post', path=problem_post.path) }}" class="btn btn-outline-light btn-lg">Ver Problema Completo</a>
             </div>
-        {% else %}
-            <div class="ultimo-problema-mes">
-                <h1>Problema do Mês</h1>
-                <p>Nenhum problema em aberto no momento.</p>
-            </div>
+        </section>
         {% endif %}
     </div>
 </div>
-</article>
 
 {% endblock %}
-
-

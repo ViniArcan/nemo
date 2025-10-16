@@ -1,43 +1,51 @@
 {% extends './partials/base_layout.html' %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/separador.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/generic-pages.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/post-content.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/view-post.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="div-separadora">
-    <h1>{{ post.meta.title }}</h1>
-</div>
+<article class="post-container">
 
-<div class="post-content-container post-body">
-    
-    {% if post.meta.post_type == 'News' and author %}
-    <div class="author-info" style="display: flex; align-items: center; margin-bottom: 20px;">
-        <img src="{{ url_for('static', filename=author.profile_image_path.replace('static/', '')) }}" alt="Author" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;">
-        <div>
-            <strong>{{ author.name }}</strong><br>
-            <small>Publicado em {{ post.meta.date.strftime('%d/%m/%Y') }}</small>
+    <header class="post-header" {% if post.meta.image %} style="background-image: url('{{ url_for('static', filename=post.meta.image) }}');"{% endif %}>
+        <div class="header-overlay">
+            <h1 class="post-title">{{ post.meta.title }}</h1>
+            
+            <div class="post-meta">
+                {% if post.path.startswith('news/') %}
+                    <span class="meta-date">Publicado em {{ post.meta.date.strftime('%d/%m/%Y') }}</span>
+                    {% if author %}
+                        <span class="meta-author">por {{ author.name }}</span>
+                    {% endif %}
+                {% endif %}
+                
+                {% if post.path.startswith('months-problems/') %}
+                    {% if post.meta.is_solved %}
+                        <span class="meta-status solved">Problema Resolvido</span>
+                    {% else %}
+                        <span class="meta-status open">Problema em Aberto</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="post-body-wrapper">
+        <div class="post-body">
+            {% if post.path.startswith('months-problems/') and post.meta.is_solved %}
+            <div class="solver-info">
+                {% if post.meta.solver_image %}
+                <img src="{{ url_for('static', filename=post.meta.solver_image) }}" alt="Foto de {{ post.meta.solver_name }}" class="solver-image">
+                {% endif %}
+                <h3 class="solver-name">Premaido: {{ post.meta.solver_name }}</h3>
+            </div>
+            <hr class="solver-separator">
+            {% endif %}
+            {{ post.html | safe }}
         </div>
     </div>
-    {% endif %}
 
-    {% if post.meta.post_type == 'Month-Problem' and post.meta.is_solved %}
-        <h3 style="color: #198754;">Problema Resolvido por: {{ post.meta.solver_name }}</h3>
-    {% endif %}
-
-    {{ post.html | safe }}
-
-    {% if post.meta.post_type == 'Month-Problem' and not post.meta.is_solved %}
-        <hr>
-        <h3 style="color: #dc3545;">Problema Em Aberto</h3>
-        <p>A solução para este problema ainda não foi publicada.</p>
-    {% endif %}
-
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</article>
 {% endblock %}

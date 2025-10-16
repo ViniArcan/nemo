@@ -1,20 +1,82 @@
-    .div-separadora video {
-        position: absolute;
-        top: -108.5px;
-        width: 32.1%;
-        object-fit: cover; 
-        z-index: 1; /* Send video to the back layer */
-    }
+/* --- General Section Styles --- */
+.news-section {
+    text-align: center;
+    margin-top: 60px;
+}
 
-    .hidden-post {
+.section-title {
+    display: inline-block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a6e1ff;
+    color: #070f43;
+}
+
+/* --- Post Grid Layout --- */
+.post-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-items: center; /* <-- ADD THIS LINE */
+}
+
+/* --- Specific Section Styles --- */
+.awards-section {
+    background-color: #fffaef;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+/* --- Button and Hidden Post Styles --- */
+.hidden-post, .initially-hidden {
     display: none;
-    }
+}
 
-    .initially-hidden {
-        display: none;
-    }
+.button-container {
+    text-align: center; 
+    margin-top: 20px;
+}
 
-    .button-container {
-        text-align: center; /* Centers the buttons */
-        margin-top: 20px;
+/* --- Header Video (from old file) --- */
+.div-separadora video {
+    position: absolute;
+    top: -108.5px;
+    width: 32.1%;
+    object-fit: cover; 
+    z-index: 1; 
+}
+
+.js-hidden-post {
+    display: none;
+}
+
+/* This hides the button container until our JS decides it's needed */
+.button-container.initially-hidden {
+    display: none;
+}
+
+/* This hides the "Show Less" button by default */
+.show-less-btn.initially-hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .central-content {
+        /* Reduce the large 10% margins to a smaller, fixed value */
+        margin-left: 15px;
+        margin-right: 15px;
     }
+}
+
+@media (max-width: 768px) {
+    .news-section {
+        /* Reduce the horizontal padding */
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

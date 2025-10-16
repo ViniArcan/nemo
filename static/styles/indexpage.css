@@ -86,13 +86,13 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-.o-que-e, .noticias {
+.o-que-e{
     /*background-color: #e5e5e5;*/
     background-color: #d3efff;
     color: rgb(24, 24, 24);
 }
 
-.noticias, .posts-recentes, .ultimo-problema-mes {
+.posts-recentes{
     padding: 30px;
 }
 
@@ -113,6 +113,19 @@ body {
     max-width: 800px;
     margin-top: auto;
     margin-bottom: auto;
+    opacity: 0; /* Start invisible */
+    transform: translateX(-50px); /* Start 50px to the left */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Smooth transition */
+}
+
+.img-container.visible {
+    opacity: 1; /* Fade in to full visibility */
+    transform: translateX(0); /* Slide back to original position */
+}
+
+.img-container .image {
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 .image {
@@ -137,29 +150,49 @@ p {
     font-size: 1.2em; /* You can adjust this value */
 }
 
-.problem-showcase-link {
-    text-decoration: none;
-    color: inherit;
+.problem-showcase {
+    display: flex;
+    align-items: start; /* This vertically centers the two columns */
+    background-color: #070f43;
+    color: white;
+    min-height: 500px; /* 1. Made the section a bit taller */
 }
 
-.problem-container {
-    display: flex;
-    gap: 30px;
-    align-items: flex-start; /* Change this to align to the top */
-    background-color: rgb(253, 246, 241);
-    padding: 20px;
-    border-radius: 8px;
+.problem-content {
+    flex: 2; /* 2. Give the text 2/3 of the space */
+    padding: 60px;
+    text-align: left;
 }
 
 .problem-image {
-    flex-shrink: 0;
-    width: 500px; /* Adjust size of the image */
+    flex: 1; /* 3. Give the image 1/3 of the space */
+    background-size: cover;
+    background-position: center;
+    align-self: stretch;
 }
 
-.problem-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
+.problem-content .section-title {
+    color: white;
+    text-align: left;
+    border-bottom: 2px solid #a6e1ff;
+    display: inline-block;
+}
+
+.problem-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.problem-desc {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.problem-showcase-link {
+    text-decoration: none;
+    color: inherit;
 }
 
 .problem-header {
@@ -169,32 +202,133 @@ p {
     margin-bottom: 20px;
 }
 
-.problem-text h1 {
-    font-size: 2.5em;
-    color: #6c757d;
-}
-
-.problem-text h2 {
-    font-size: 2em;
-    font-weight: bold;
-}
-
 .problem-header hr {
     width: 100%;
     border: 1px solid #ccc;
 }
 
-.horizontal-scroll-wrapper {
-    overflow-x: auto; /* This enables horizontal scrolling */
-    padding-bottom: 20px; /* Add space for the scrollbar */
+/* --- NEW Tabbed Interface Styles --- */
+.tab-container {
+    padding: 50px 10%;
+    background-color: #f8f9fa; /* Light background for the whole section */
 }
 
-.post-container-scrollable {
+/* Styling for the tab buttons */
+.nav-tabs {
+    border-bottom: 2px solid #a6e1ff; /* Custom border color */
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    font-weight: bold;
+    color: #6c757d; /* Inactive tab text color */
+    padding: 10px 20px;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #a6e1ff; /* Active tab background color */
+    color: #070f43;
+    border-color: #a6e1ff;
+    border-radius: 5px 5px 0 0;
+}
+
+/* Styling for the content area */
+.tab-content {
+    background-color: #ffffff;
+    padding: 40px;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+
+.tab-pane-content {
     display: flex;
-    flex-wrap: nowrap; /* Ensure all cards stay in one line */
-    gap: 20px; /* Space between cards */
+    align-items: center;
+    gap: 40px;
 }
 
-.col-scrollable {
-    flex: 0 0 300px; /* Each card will have a fixed width of 300px */
+.tab-text-content {
+    flex: 1; /* Takes up 50% */
+}
+
+.tab-text-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #070f43;
+}
+
+.tab-image-container {
+    flex: 1; /* Takes up 50% */
+    max-width: 500px;
+}
+
+.tab-image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 992px) {
+    .tab-pane-content {
+        flex-direction: column; /* Stacks image and text vertically */
+    }
+    .tab-text-content {
+        text-align: center;
+        order: 2; /* Puts text below image */
+    }
+    .tab-image-container {
+        order: 1; /* Puts image above text */
+    }
+}
+
+/* --- NEW Latest News Section --- */
+.latest-news {
+    padding: 80px 10%;
+    background-color: #ffffff; /* Clean white background */
+}
+
+.post-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-items: center; /* <-- ADD THIS LINE */
+}
+
+.view-all-container {
+    text-align: center;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 40px; /* Adds some space above the button */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .problem-showcase {
+        flex-direction: column-reverse; /* Stack image on top of text */
+    }
+    .problem-content {
+        text-align: center;
+    }
+    .problem-content .section-title {
+        text-align: center;
+    }
+    .problem-image {
+        min-height: 300px;
+        flex: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .latest-news {
+        /* Reduce the horizontal padding on smaller screens */
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }

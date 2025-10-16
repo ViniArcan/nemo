@@ -8,7 +8,6 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/news.css') }}">
 {% endblock %}
 
-
 {% block content %}
 <div class="div-separadora">
     <video autoplay muted playsinline>
@@ -19,11 +18,11 @@
 
 <div class="central-content">
     {% if award_posts %}
-    <div class="news-section">
-        <h2>Prêmios e Conquistas</h2>
-        <div class="post-showcase row">
+    <div class="news-section awards-section">
+        <h2 class="section-title">Prêmios e Conquistas</h2>
+        <div class="post-showcase">
             {% for post in award_posts %}
-                <div class="col-md-4 news-post-item {% if loop.index > 3 %}hidden-post{% endif %}" data-section="awards">
+                <div class="news-post-item {% if loop.index > 3 %}hidden-post{% endif %}" data-section="awards">
                     <div class="resumo-post">
                         <a href="{{ url_for('view_post', path=post.path) }}" style="text-decoration: none; color: inherit;">
                             {% if post.meta.image %}
@@ -40,12 +39,12 @@
                 </div>
             {% endfor %}
         </div>
-        {% if award_posts|length > 3 %}
-            <div class="button-container">
-                <button class="btn btn-primary show-more-btn" data-target="awards">Mostrar mais</button>
-                <button class="btn btn-secondary show-less-btn initially-hidden" data-target="awards">Mostrar menos</button>
-            </div>
-        {% endif %}
+
+        <div class="button-container initially-hidden">
+            <button class="btn btn-primary show-more-btn">Mostrar mais</button>
+            <button class="btn btn-secondary show-less-btn initially-hidden">Mostrar menos</button>
+        </div>
+
     </div>
     {% endif %}
 
@@ -53,10 +52,10 @@
 
     {% if other_news_posts %}
     <div class="news-section">
-        <h2>Notícias gerais</h2>
-        <div class="post-showcase row">
+        <h2 class="section-title">Notícias gerais</h2>
+        <div class="post-showcase">
             {% for post in other_news_posts %}
-                <div class="col-md-4 news-post-item {% if loop.index > 3 %}hidden-post{% endif %}" data-section="other">
+                <div class="news-post-item {% if loop.index > 3 %}hidden-post{% endif %}" data-section="other">
                     <div class="resumo-post">
                         <a href="{{ url_for('view_post', path=post.path) }}" style="text-decoration: none; color: inherit;">
                             {% if post.meta.image %}
@@ -73,12 +72,12 @@
                 </div>
             {% endfor %}
         </div>
-        {% if other_news_posts|length > 3 %}
-            <div class="button-container">
-                <button class="btn btn-primary show-more-btn" data-target="other">Mostrar mais</button>
-                <button class="btn btn-secondary show-less-btn initially-hidden" data-target="other">Mostrar menos</button>
-            </div>
-        {% endif %}
+
+        <div class="button-container initially-hidden">
+            <button class="btn btn-primary show-more-btn">Mostrar mais</button>
+            <button class="btn btn-secondary show-less-btn initially-hidden">Mostrar menos</button>
+        </div>
+
     </div>
     {% endif %}
     {% if not award_posts and not other_news_posts %}
@@ -92,6 +91,9 @@
 {% endblock %}
 
 {% block scripts %}
+
+<script src="{{ url_for('static', filename='js/responsive-grid.js') }}"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const showMoreButtons = document.querySelectorAll('.show-more-btn');
