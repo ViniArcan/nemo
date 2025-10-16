@@ -98,11 +98,3 @@
         margin-right: 0;
     }
 }
-
-.div-separadora video {
-    position: absolute;
-    top: -112.5px;
-    width: 32%;
-    object-fit: cover; 
-    z-index: 1; /* Send video to the back layer */
-}

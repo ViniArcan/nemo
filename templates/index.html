@@ -8,20 +8,36 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/shorten-paragraphs-inside-posts.js') }}"></script>
 <script src="{{ url_for('static', filename='js/responsive-grid.js') }}"></script>
+
+<script>
+function adjustContentForNavbar() {
+    const navbar = document.getElementById('main-navbar');
+    const content = document.querySelector('.logocominfo'); // Selects your main content section
+
+    if (navbar && content) {
+        const navbarHeight = navbar.offsetHeight;
+        content.style.paddingTop = `${navbarHeight}px`;
+    }
+    }
+
+    // Run the function when the page is ready
+    window.addEventListener('DOMContentLoaded', adjustContentForNavbar);
+    // Re-run it if the window resizes (in case the navbar height changes)
+    window.addEventListener('resize', adjustContentForNavbar);
+</script>
 {% endblock %}
 
 {% block content %}
 
 <div class="logocominfo">
+    <video autoplay muted>
+        <source src="{{ url_for('static', filename='/videos/FishCurve.webm') }}" type="video/webm">
+        Seu navegador não suporta vídeos!
+    </video>
     <div class="textos-logo">
         <p>Núcleo de Estudos de Matemática Olímpica</p>
     </div>
-    <div class="video-container">
-        <video autoplay muted>
-            <source src="{{ url_for('static', filename='/videos/FishCurve.webm') }}" type="video/webm">
-            Seu navegador não suporta vídeos!
-        </video>
-    </div>
+    
 </div>
 
 <div class="conteudo">
